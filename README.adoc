@@ -17,6 +17,9 @@ ifdef::env-github[]
 :warning-caption: :warning:
 endif::[]
 
+image:https://travis-ci.org/rmpestano/dbunit-rules-sample.svg[Build Status (Travis CI), link=https://travis-ci.org/rmpestano/dbunit-rules-travis]
+
+
 In this post I am going to talk about https://github.com/rmpestano/dbunit-rules[DBUnit Rules^], a small opensource project I maintain which aims to simplify database testingfootnote:[In the context of this article, database testing stands for http://junit.org/[JUnit^] integration tests which depend on a *relational* database so application business logic that depend on a database can be tested without mocking.].
 
 == Introduction
