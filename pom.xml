@@ -136,6 +136,7 @@
                         <configuration>
                             <sourceDirectory>src/main/docs</sourceDirectory>
                             <sourceDocumentName>dbunit-rules.adoc</sourceDocumentName>
+                            <outputDirectory>${project.build.directory}/docs</outputDirectory>
                             <headerFooter>true</headerFooter>
                             <doctype>book</doctype>
                             <attributes>
@@ -154,7 +155,7 @@
                                     <sourceHighlighter>coderay</sourceHighlighter>
                                     <backend>html5</backend>
                                     <attributes>
-                                        <linkcss>true</linkcss>
+                                        <linkcss>false</linkcss>
                                         <linkattrs>true</linkattrs>
                                         <sectnums/>
                                         <toc>center</toc>
@@ -196,8 +197,7 @@
                         <version>1.1</version>
                         <configuration>
                             <checkoutDirectory>${project.build.outputDirectory}</checkoutDirectory>
-                            <checkinComment>Publishing DBUnit Rules Sample documentation.
-                            </checkinComment>
+                            <checkinComment>Publishing DBUnit Rules Sample documentation.</checkinComment>
                             <content>target/docs</content>
                             <skipDeletedFiles>true</skipDeletedFiles>
                             <pubScmUrl>scm:git:https://${USER}:${PASS}@github.com/rmpestano/dbunit-rules-sample.git
