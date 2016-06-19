@@ -8,7 +8,7 @@ before_script:
 - git config --global user.name rmpestano
 - git config --global user.email rmpestano@gmail.com
 script:
-- mvn clean package
+- mvn clean package -Pdocs
 - mvn -q scm-publish:publish-scm -Pdocs
 env:
   global:
