@@ -1,0 +1,14 @@
+sudo: false
+language: java
+jdk: oraclejdk7
+cache:
+  directories:
+  - "$HOME/.m2/repository"
+
+before_script:
+- git config --global user.name rmpestano
+- git config --global user.email rmpestano@gmail.com
+
+script:
+- mvn clean package
+- mvn -q cukedoctor:execute scm-publish:publish-scm -Pdocs
