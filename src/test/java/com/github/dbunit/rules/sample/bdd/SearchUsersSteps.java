@@ -33,6 +33,7 @@ public class SearchUsersSteps {
     @UsingDataSet("usersWithTweet.json")
     public void We_have_two_users_in_our_database() throws Throwable {
     }
+
     @When("^I search them by tweet content \"([^\"]*)\"$")
     public void I_search_them_by_tweet_content_value(String tweetContent) throws Throwable {
         Session session = entityManager.unwrap(Session.class);

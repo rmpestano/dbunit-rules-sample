@@ -151,6 +151,7 @@
                             <attributes>
                                 <sourcedir>${project.build.testSourceDirectory}</sourcedir>
                                 <datasetdir>${project.build.testSourceDirectory}/../resources/datasets</datasetdir>
+                                <featuresdir>${project.build.testSourceDirectory}/../resources/features</featuresdir>
                                 <metainf>${project.build.testSourceDirectory}/../resources/META-INF</metainf>
                                 <basedir>${project.build.directory}/../</basedir>
                                 <imagesdir>./images</imagesdir>

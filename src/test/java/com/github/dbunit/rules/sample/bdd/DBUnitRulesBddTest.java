@@ -9,5 +9,5 @@ import org.junit.runner.RunWith;
  */
 @RunWith(CdiCucumberTestRunner.class)
 @CucumberOptions(features ="src/test/resources/features/search-users.feature")
-public class DBUnitRulesBdd {
+public class DBUnitRulesBddTest {
 }

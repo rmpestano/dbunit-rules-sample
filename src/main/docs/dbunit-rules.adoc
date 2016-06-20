@@ -366,9 +366,46 @@ include::{sourcedir}/com/github/dbunit/rules/sample/cdi/DBUnitRulesCDITest.java[
 
 == Ruling database in BDD tests
 
+BDD and DBUnit are integrated by https://github.com/rmpestano/dbunit-rules#cucumber-module[DBUnit Rules Cucumber^]. It's a https://cucumber.io/[Cucumber^] runner which is CDI aware.
 
 
+=== Configuration
 
+Just add following dependency to your classpath:
 
+.pom.xml
+----
+include::{basedir}/pom.xml[tags=dbunit-cucumber]
+----
 
+Now you just need to use *CdiCucumberTestRunner* to have `Cucumber`, `CDI` and `DBUnit` to manage database on your BDD tests.
 
+=== Example
+
+First we need a feature file:
+
+.src/test/resources/search-users.feature
+----
+include::{featuresdir}/search-users.feature[]
+----
+
+The a dataset to prepare our database:
+
+.src/test/resources/search-users.feature
+----
+include::{datasetdir}/usersWithTweet.json[]
+----
+
+Now a Cucumber runner test entry point:
+
+[source,java,linenums]
+----
+include::{sourcedir}/com/github/dbunit/rules/sample/bdd/DBUnitRulesBddTest.java[]
+----
+
+And finally our cucumber step definitions:
+
+[source,java,linenums]
+----
+include::{sourcedir}/com/github/dbunit/rules/sample/bdd/SearchUsersSteps.java[]
+----
