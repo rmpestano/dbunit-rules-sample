@@ -126,7 +126,7 @@ public class DBUnitRulesCoreTest {
         assertThat(tweet).isNotNull();
         assertThat(tweet.getLikes()).isEqualTo(50);
     }
-    //end::scriptable-groovy[]
+    //end::scriptable-js[]
 
     //tag::scriptable-groovy[]
     @Test

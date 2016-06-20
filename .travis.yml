@@ -8,8 +8,12 @@ before_script:
 - git config --global user.name rmpestano
 - git config --global user.email rmpestano@gmail.com
 script:
-- mvn clean package -Pdocs
-- mvn -q scm-publish:publish-scm -Pdocs
+- mvn clean package
+
+after_script:
+- mvn generate-resources -Pdocs -Dmaven.test.skip=true
+- mvn -q scm-publish:publish-scm -Pdocs -Dmaven.test.skip=true
+
 env:
   global:
   - secure: hIl7unZCLDXPjmyNLO+GNzOXqSY19FmJSPWLw4iHFpVZ4cLFC0QiZXfqdW/VPG0uWUfPUFTIUeJIa4ezAu8vPHzjot7xc5VfifhBWA8MXTZg9tzz6jjhvaH8NTrv+FZdBcRoGYLxHUK2ORABJ3Vzxt9JODkSpDPUWe8YgF4ufoyVROuHP0+aTMwVrFu4Ux4+JRGuI5cLMUg1YhrKwJHSzcRK3rtgQ1/WNvWrUOuVNZ+wbOiLqVif4CwET3tLps52n6UnNcYibqQDkGhrdMJ4vKsgBkkJXY8lYJZChuy63/QgZK9dKGoWU4LBPdw5MLhvbflvAAT0Jsl5giQyISMwPsM+aTNTJLlI4W3WaMaMOYi//hmmo/dCWu4fbDHOTCBNrPMiq4eQMuBpY10zAwmoVp8ymyzRLUpU5/5SN7rlt2BaKCIO2HOMVZQzSjwBwjDH62QnPMuRZjI05Vtu3UnvEDTfpDmdi9ca4VGKgyNUtNpEf6vnDhxkHZEzIUXvRWsb8JIVisVKN1KapykgF+mKOTGpvEviV3yCb8koeh38R+tdYWf9H7ivzBTRCuFKqMSZqK13w2uLEuGo13/AYNmhS2FCLi1qxoWcieffn1IsibTYDkidtYZbZZK5NsMDkTCY9uW+YuQ5y1AnUWL9DR90CRDcf4h0efyPgHt555K+7Ao=

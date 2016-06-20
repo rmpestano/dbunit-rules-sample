@@ -178,7 +178,7 @@ include::{sourcedir}/com/github/dbunit/rules/sample/DBUnitRulesCoreTest.java[tag
 ----
 <1> You don't need to initialize a dataset but can use `cleanBefore` to clear database before testing.
 
-IMPORTANT: When you use a dataset like users.yml in @DataSet dbunit will use `CLEAN_INSERT` seeding strategy for all declared tables in dataset. This is why we didn't needed `cleanBefore` in any other example tests. 
+IMPORTANT: When you use a dataset like users.yml in @DataSet dbunit will use `CLEAN_INSERT` seeding strategy (by default) for all declared tables in dataset. This is why we didn't needed `cleanBefore` in any other example tests.
 
 == Scriptable datasets
 
