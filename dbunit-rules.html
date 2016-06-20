@@ -1774,7 +1774,7 @@ If we declare <code>User</code> table in <code>dataset-with-javascript.yml</code
 </div>
 </div>
 <div class="paragraph">
-<p>Now you just need to use <strong>CdiCucumberTestRunner</strong> to have <code>Cucumber</code>, <code>CDI</code> and <code>DBUnit</code> to manage database on your BDD tests.</p>
+<p>Now you just need to use <strong>CdiCucumberTestRunner</strong> to have <code>Cucumber</code>, <code>CDI</code> and <code>DBUnit</code> on your BDD tests.</p>
 </div>
 </div>
 <div class="sect2">
@@ -1783,12 +1783,12 @@ If we declare <code>User</code> table in <code>dataset-with-javascript.yml</code
 <p>First we need a feature file:</p>
 </div>
 <div class="listingblock">
-<div class="title">src/test/resources/search-users.feature</div>
+<div class="title">src/test/resources/features/search-users.feature</div>
 <div class="content">
 <pre>Feature: Search users
 In order to find users quickly
 As a recruiter
-I want to be able to query users by meaningful search criteria.
+I want to be able to query users by its tweets.
 
 Scenario Outline: Search users by tweet content
 
@@ -1804,10 +1804,10 @@ Examples:
 </div>
 </div>
 <div class="paragraph">
-<p>The a dataset to prepare our database:</p>
+<p>Then a dataset to prepare our database:</p>
 </div>
 <div class="listingblock">
-<div class="title">src/test/resources/search-users.feature</div>
+<div class="title">src/test/resources/datasets/usersWithTweet.json</div>
 <div class="content">
 <pre>{
   "USER": [
@@ -2003,7 +2003,7 @@ Examples:
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-06-20 04:10:40 UTC
+Last updated 2016-06-20 04:14:35 UTC
 </div>
 </div>
 </body>
