@@ -531,7 +531,13 @@ table.CodeRay td.code>pre{padding:0}
 </ul>
 </li>
 <li><a href="#multiple_databases">7. Multiple databases</a></li>
-<li><a href="#ruling_database_in_cdi_tests">8. Ruling database in CDI tests</a></li>
+<li><a href="#ruling_database_in_cdi_tests">8. Ruling database in CDI tests</a>
+<ul class="sectlevel2">
+<li><a href="#classpath_dependencies">8.1. Classpath dependencies</a></li>
+<li><a href="#configuration">8.2. Configuration</a></li>
+<li><a href="#example_2">8.3. Example</a></li>
+</ul>
+</li>
 <li><a href="#ruling_database_in_bdd_tests">9. Ruling database in BDD tests</a></li>
 </ul>
 </div>
@@ -1407,9 +1413,9 @@ If we declare <code>User</code> table in <code>dataset-with-javascript.yml</code
                 instance(<span class="string"><span class="delimiter">&quot;</span><span class="content">exec2</span><span class="delimiter">&quot;</span></span>, <span class="keyword">new</span> ConnectionHolderImpl(emProvider2.connection()));
 
         <span class="comment">//programmatic seed db1</span>
-        exec1.createDataSet(<span class="keyword">new</span> DataSetModel(<span class="string"><span class="delimiter">&quot;</span><span class="content">users.yml</span><span class="delimiter">&quot;</span></span>)); <span class="comment">//&lt;&gt;</span>
-        <span class="comment">//seed db1</span>
-        exec2.createDataSet(<span class="keyword">new</span> DataSetModel(<span class="string"><span class="delimiter">&quot;</span><span class="content">dataset-with-javascript.yml</span><span class="delimiter">&quot;</span></span>));
+        exec1.createDataSet(<span class="keyword">new</span> DataSetModel(<span class="string"><span class="delimiter">&quot;</span><span class="content">users.yml</span><span class="delimiter">&quot;</span></span>));
+
+        exec2.createDataSet(<span class="keyword">new</span> DataSetModel(<span class="string"><span class="delimiter">&quot;</span><span class="content">dataset-with-javascript.yml</span><span class="delimiter">&quot;</span></span>));<span class="comment">//seed db2</span>
 
         <span class="comment">//user comes from database represented by pu1</span>
         User user = (User) emProvider.em().
@@ -1448,7 +1454,296 @@ If we declare <code>User</code> table in <code>dataset-with-javascript.yml</code
 <div class="sect1">
 <h2 id="ruling_database_in_cdi_tests"><a class="anchor" href="#ruling_database_in_cdi_tests"></a>8. Ruling database in CDI tests</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>For CDI based tests we are going to use <a href="https://deltaspike.apache.org/documentation/test-control.html" target="_blank">DeltaSpike test control module</a> and <a href="https://github.com/rmpestano/dbunit-rules/tree/master/cdi" target="_blank">DBUnit rules CDI</a>.</p>
+</div>
+<div class="paragraph">
+<p>The first enables CDI in JUnit tests and the second enables DBUnit though a CDI interceptor.</p>
+</div>
+<div class="sect2">
+<h3 id="classpath_dependencies"><a class="anchor" href="#classpath_dependencies"></a>8.1. Classpath dependencies</h3>
+<div class="paragraph">
+<p>First we need DBUnit CDI:
+.pom.xml</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>        &lt;dependency&gt;
+            &lt;groupId&gt;com.github.dbunit-rules&lt;/groupId&gt;
+            &lt;artifactId&gt;cdi&lt;/artifactId&gt;
+            &lt;version&gt;${dbunit-rules.version}&lt;/version&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And also DeltaSpike control module:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>        &lt;dependency&gt; <i class="conum" data-value="1"></i><b>(1)</b>
+            &lt;groupId&gt;org.apache.deltaspike.core&lt;/groupId&gt;
+            &lt;artifactId&gt;deltaspike-core-impl&lt;/artifactId&gt;
+            &lt;version&gt;${ds.version}&lt;/version&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
 
+        &lt;dependency&gt; <i class="conum" data-value="2"></i><b>(2)</b>
+            &lt;groupId&gt;org.apache.deltaspike.modules&lt;/groupId&gt;
+            &lt;artifactId&gt;deltaspike-test-control-module-api&lt;/artifactId&gt;
+            &lt;version&gt;${ds.version}&lt;/version&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+
+        &lt;dependency&gt; <i class="conum" data-value="2"></i><b>(2)</b>
+            &lt;groupId&gt;org.apache.deltaspike.modules&lt;/groupId&gt;
+            &lt;artifactId&gt;deltaspike-test-control-module-impl&lt;/artifactId&gt;
+            &lt;version&gt;${ds.version}&lt;/version&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+
+        &lt;dependency&gt; <i class="conum" data-value="3"></i><b>(3)</b>
+            &lt;groupId&gt;org.apache.deltaspike.cdictrl&lt;/groupId&gt;
+            &lt;artifactId&gt;deltaspike-cdictrl-owb&lt;/artifactId&gt;
+            &lt;version&gt;${ds.version}&lt;/version&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+
+        &lt;dependency&gt; <i class="conum" data-value="4"></i><b>(4)</b>
+            &lt;groupId&gt;org.apache.openwebbeans&lt;/groupId&gt;
+            &lt;artifactId&gt;openwebbeans-impl&lt;/artifactId&gt;
+            &lt;version&gt;1.6.2&lt;/version&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;</pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>DeltaSpike core module is base of all DeltaSpike modules</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Test control module api and impl</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>CDI control OWB dependency, it is responsible for bootstraping CDI container</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>OpenWebBeans as CDI implementation</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="configuration"><a class="anchor" href="#configuration"></a>8.2. Configuration</h3>
+<div class="paragraph">
+<p>For configuration we will need a beans.xml which enables DBUnit CDI interceptor:</p>
+</div>
+<div class="listingblock">
+<div class="title">/src/test/resources/META-INF/beans.xml</div>
+<div class="content">
+<pre>include::{metainf}/beans.xml</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And <code>apache-deltaspike.properties</code> to set our tests as CDI beans:</p>
+</div>
+<div class="listingblock">
+<div class="title">/src/test/resources/META-INF/apache-deltaspike.properties</div>
+<div class="content">
+<pre>include::{metainf}/apache-deltaspike.properties</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The test itself must be a CDI bean so DBUnit Rules can intercept it.</p>
+</div>
+<div class="paragraph">
+<p>The last configuration needed is to produce a EntityManager for tests:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><table class="CodeRay"><tr>
+  <td class="line-numbers"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+</pre></td>
+  <td class="code"><pre><span class="keyword">package</span> <span class="namespace">com.github.dbunit.rules.sample</span>;
+
+
+<span class="keyword">import</span> <span class="include">com.github.dbunit.rules.util.EntityManagerProvider</span>;
+
+<span class="keyword">import</span> <span class="include">javax.enterprise.context.ApplicationScoped</span>;
+<span class="keyword">import</span> <span class="include">javax.enterprise.inject.Produces</span>;
+<span class="keyword">import</span> <span class="include">javax.persistence.EntityManager</span>;
+
+<span class="comment">/**
+ * Created by pestano on 09/10/15.
+ */</span>
+<span class="annotation">@ApplicationScoped</span>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">EntityManagerProducer</span> {
+
+    <span class="directive">private</span> EntityManager em;
+
+
+    <span class="annotation">@Produces</span>
+    <span class="directive">public</span> EntityManager produce() {
+        <span class="keyword">return</span> EntityManagerProvider.instance(<span class="string"><span class="delimiter">&quot;</span><span class="content">rulesDB</span><span class="delimiter">&quot;</span></span>).em();
+    }
+
+}</pre></td>
+</tr></table></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This entityManager will be used as a bridge to JDBC connection needed by DBUnit Rules.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="example_2"><a class="anchor" href="#example_2"></a>8.3. Example</h3>
+<div class="paragraph">
+<p>Here is a test example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><table class="CodeRay"><tr>
+  <td class="line-numbers"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+</pre></td>
+  <td class="code"><pre><span class="annotation">@RunWith</span>(CdiTestRunner.class) <i class="conum" data-value="1"></i><b>(1)</b>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">DBUnitRulesCDITest</span> {
+
+    <span class="annotation">@Inject</span>
+    EntityManager em; <i class="conum" data-value="2"></i><b>(2)</b>
+
+
+
+    <span class="annotation">@Test</span>
+    <span class="annotation">@UsingDataSet</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">users.yml</span><span class="delimiter">&quot;</span></span>) <i class="conum" data-value="3"></i><b>(3)</b>
+    <span class="directive">public</span> <span class="type">void</span> shouldListUsers() {
+        <span class="predefined-type">List</span>&lt;User&gt; users = em().
+                createQuery(<span class="string"><span class="delimiter">&quot;</span><span class="content">select u from User u</span><span class="delimiter">&quot;</span></span>).
+                getResultList();
+        assertThat(users).
+                isNotNull().
+                isNotEmpty().
+                hasSize(<span class="integer">2</span>);
+    }
+}</pre></td>
+</tr></table></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>DeltaSpike JUnit runner that enables CDI in tests;</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The EntityManager we produced in previous steps;</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>This annotation enables DBUnit CDI interceptor which will prepare database state before the test execution.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>All other features presented earlier, <strong>except multiple databases</strong>, are supported by DBUnit CDI.</p>
+</div>
+<div class="paragraph">
+<p>Here is <code>ExpectedDataSet</code> example:</p>
+</div>
+<div class="listingblock">
+<div class="title">src/test/resources/datasets/expectedUsers.yml</div>
+<div class="content">
+<pre>user:
+  - id: 1
+    name: "expected user1"
+  - id: 2
+    name: "expected user2"</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And the test:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><table class="CodeRay"><tr>
+  <td class="line-numbers"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre></td>
+  <td class="code"><pre>    <span class="annotation">@Test</span>
+    <span class="annotation">@UsingDataSet</span>(cleanBefore = <span class="predefined-constant">true</span>) <span class="comment">//needed to activate interceptor (can be at class level)</span>
+    <span class="annotation">@ExpectedDataSet</span>(value = <span class="string"><span class="delimiter">&quot;</span><span class="content">expectedUsers.yml</span><span class="delimiter">&quot;</span></span>,ignoreCols = <span class="string"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>)
+    <span class="directive">public</span> <span class="type">void</span> shouldMatchExpectedDataSet() {
+        User u = <span class="keyword">new</span> User();
+        u.setName(<span class="string"><span class="delimiter">&quot;</span><span class="content">expected user1</span><span class="delimiter">&quot;</span></span>);
+        User u2 = <span class="keyword">new</span> User();
+        u2.setName(<span class="string"><span class="delimiter">&quot;</span><span class="content">expected user2</span><span class="delimiter">&quot;</span></span>);
+        em.getTransaction().begin();
+        em.persist(u);
+        em.persist(u2);
+        em.getTransaction().commit();
+    }</pre></td>
+</tr></table></code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -1466,7 +1761,7 @@ If we declare <code>User</code> table in <code>dataset-with-javascript.yml</code
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-06-20 01:43:49 UTC
+Last updated 2016-06-20 03:03:00 UTC
 </div>
 </div>
 </body>
