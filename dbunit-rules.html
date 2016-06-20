@@ -538,7 +538,12 @@ table.CodeRay td.code>pre{padding:0}
 <li><a href="#example_2">8.3. Example</a></li>
 </ul>
 </li>
-<li><a href="#ruling_database_in_bdd_tests">9. Ruling database in BDD tests</a></li>
+<li><a href="#ruling_database_in_bdd_tests">9. Ruling database in BDD tests</a>
+<ul class="sectlevel2">
+<li><a href="#configuration_2">9.1. Configuration</a></li>
+<li><a href="#example_3">9.2. Example</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -1749,7 +1754,244 @@ If we declare <code>User</code> table in <code>dataset-with-javascript.yml</code
 <div class="sect1">
 <h2 id="ruling_database_in_bdd_tests"><a class="anchor" href="#ruling_database_in_bdd_tests"></a>9. Ruling database in BDD tests</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>BDD and DBUnit are integrated by <a href="https://github.com/rmpestano/dbunit-rules#cucumber-module" target="_blank">DBUnit Rules Cucumber</a>. It&#8217;s a <a href="https://cucumber.io/" target="_blank">Cucumber</a> runner which is CDI aware.</p>
+</div>
+<div class="sect2">
+<h3 id="configuration_2"><a class="anchor" href="#configuration_2"></a>9.1. Configuration</h3>
+<div class="paragraph">
+<p>Just add following dependency to your classpath:</p>
+</div>
+<div class="listingblock">
+<div class="title">pom.xml</div>
+<div class="content">
+<pre>        &lt;dependency&gt;
+            &lt;groupId&gt;com.github.dbunit-rules&lt;/groupId&gt;
+            &lt;artifactId&gt;cucumber&lt;/artifactId&gt;
+            &lt;version&gt;${dbunit-rules.version}&lt;/version&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now you just need to use <strong>CdiCucumberTestRunner</strong> to have <code>Cucumber</code>, <code>CDI</code> and <code>DBUnit</code> to manage database on your BDD tests.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="example_3"><a class="anchor" href="#example_3"></a>9.2. Example</h3>
+<div class="paragraph">
+<p>First we need a feature file:</p>
+</div>
+<div class="listingblock">
+<div class="title">src/test/resources/search-users.feature</div>
+<div class="content">
+<pre>Feature: Search users
+In order to find users quickly
+As a recruiter
+I want to be able to query users by meaningful search criteria.
 
+Scenario Outline: Search users by tweet content
+
+Given We have two users that have tweets in our database
+
+When I search them by tweet content &lt;value&gt;
+
+Then I should find &lt;number&gt; users
+Examples:
+| value    | number |
+| "dbunit" | 1      |
+| "rules"  | 2      |</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The a dataset to prepare our database:</p>
+</div>
+<div class="listingblock">
+<div class="title">src/test/resources/search-users.feature</div>
+<div class="content">
+<pre>{
+  "USER": [
+    {
+      "id": 1,
+      "name": "@realpestano"
+    },
+    {
+      "id": 2,
+      "name": "@dbunit"
+    }
+  ],
+  "TWEET": [
+    {
+      "id": 1,
+      "content": "dbunit rules json example",
+      "date": "2013-01-20",
+      "user_id": 1
+    },
+    {
+      "id": 2,
+      "content": "CDI rules",
+      "date": "2016-06-20",
+      "user_id": 2
+    }
+  ]
+}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now a Cucumber runner test entry point:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><table class="CodeRay"><tr>
+  <td class="line-numbers"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre></td>
+  <td class="code"><pre><span class="keyword">package</span> <span class="namespace">com.github.dbunit.rules.sample.bdd</span>;
+
+<span class="keyword">import</span> <span class="include">com.github.dbunit.rules.cucumber.CdiCucumberTestRunner</span>;
+<span class="keyword">import</span> <span class="include">cucumber.api.CucumberOptions</span>;
+<span class="keyword">import</span> <span class="include">org.junit.runner.RunWith</span>;
+
+<span class="comment">/**
+ * Created by rmpestano on 4/17/16.
+ */</span>
+<span class="annotation">@RunWith</span>(CdiCucumberTestRunner.class)
+<span class="annotation">@CucumberOptions</span>(features =<span class="string"><span class="delimiter">&quot;</span><span class="content">src/test/resources/features/search-users.feature</span><span class="delimiter">&quot;</span></span>)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">DBUnitRulesBddTest</span> {
+}</pre></td>
+</tr></table></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And finally our cucumber step definitions:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><table class="CodeRay"><tr>
+  <td class="line-numbers"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+</pre></td>
+  <td class="code"><pre><span class="keyword">package</span> <span class="namespace">com.github.dbunit.rules.sample.bdd</span>;
+
+<span class="keyword">import</span> <span class="include">com.github.dbunit.rules.cdi.api.UsingDataSet</span>;
+<span class="keyword">import</span> <span class="include">com.github.dbunit.rules.sample.User</span>;
+<span class="keyword">import</span> <span class="include">cucumber.api.PendingException</span>;
+<span class="keyword">import</span> <span class="include">cucumber.api.java.en.Given</span>;
+<span class="keyword">import</span> <span class="include">cucumber.api.java.en.Then</span>;
+<span class="keyword">import</span> <span class="include">cucumber.api.java.en.When</span>;
+<span class="keyword">import</span> <span class="include">org.hibernate.Criteria</span>;
+<span class="keyword">import</span> <span class="include">org.hibernate.Session</span>;
+<span class="keyword">import</span> <span class="include">org.hibernate.criterion.DetachedCriteria</span>;
+<span class="keyword">import</span> <span class="include">org.hibernate.criterion.MatchMode</span>;
+<span class="keyword">import</span> <span class="include">org.hibernate.criterion.Restrictions</span>;
+<span class="keyword">import</span> <span class="include">org.hibernate.sql.JoinType</span>;
+
+<span class="keyword">import</span> <span class="include">javax.inject.Inject</span>;
+<span class="keyword">import</span> <span class="include">javax.persistence.EntityManager</span>;
+<span class="keyword">import</span> <span class="include">java.util.List</span>;
+
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.assertj.core.api.Assertions.assertThat</span>;
+
+<span class="comment">/**
+ * Created by pestano on 20/06/16.
+ */</span>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">SearchUsersSteps</span> {
+
+    <span class="annotation">@Inject</span>
+    EntityManager entityManager;
+
+    <span class="predefined-type">List</span>&lt;User&gt; usersFound;
+
+    <span class="annotation">@Given</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">^We have two users that have tweets in our database$</span><span class="delimiter">&quot;</span></span>)
+    <span class="annotation">@UsingDataSet</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">usersWithTweet.json</span><span class="delimiter">&quot;</span></span>)
+    <span class="directive">public</span> <span class="type">void</span> We_have_two_users_in_our_database() <span class="directive">throws</span> <span class="predefined-type">Throwable</span> {
+    }
+
+    <span class="annotation">@When</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">^I search them by tweet content </span><span class="char">\&quot;</span><span class="content">([^</span><span class="char">\&quot;</span><span class="content">]*)</span><span class="char">\&quot;</span><span class="content">$</span><span class="delimiter">&quot;</span></span>)
+    <span class="directive">public</span> <span class="type">void</span> I_search_them_by_tweet_content_value(<span class="predefined-type">String</span> tweetContent) <span class="directive">throws</span> <span class="predefined-type">Throwable</span> {
+        Session session = entityManager.unwrap(Session.class);
+        usersFound = session.createCriteria(User.class).
+        createAlias(<span class="string"><span class="delimiter">&quot;</span><span class="content">tweets</span><span class="delimiter">&quot;</span></span>,<span class="string"><span class="delimiter">&quot;</span><span class="content">tweets</span><span class="delimiter">&quot;</span></span>, JoinType.LEFT_OUTER_JOIN).
+        add(Restrictions.ilike(<span class="string"><span class="delimiter">&quot;</span><span class="content">tweets.content</span><span class="delimiter">&quot;</span></span>,tweetContent, MatchMode.ANYWHERE)).list();
+    }
+
+    <span class="annotation">@Then</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">^I should find (</span><span class="char">\\</span><span class="content">d+) users$</span><span class="delimiter">&quot;</span></span>)
+    <span class="directive">public</span> <span class="type">void</span> I_should_find_number_users(<span class="type">int</span> numberOfUsersFound) <span class="directive">throws</span> <span class="predefined-type">Throwable</span> {
+        assertThat(usersFound).
+                isNotNull().
+                hasSize(numberOfUsersFound).
+                contains(<span class="keyword">new</span> User(<span class="integer">1</span>));<span class="comment">//examples contains user with id=1</span>
+    }
+
+
+}</pre></td>
+</tr></table></code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -1761,7 +2003,7 @@ If we declare <code>User</code> table in <code>dataset-with-javascript.yml</code
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-06-20 03:58:51 UTC
+Last updated 2016-06-20 04:10:40 UTC
 </div>
 </div>
 </body>
