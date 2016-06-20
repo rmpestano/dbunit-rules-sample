@@ -285,6 +285,85 @@ include::{sourcedir}/com/github/dbunit/rules/sample/MultipleDataBasesTest.java[]
 
 == Ruling database in CDI tests
 
+For CDI based tests we are going to use https://deltaspike.apache.org/documentation/test-control.html[DeltaSpike test control module^] and https://github.com/rmpestano/dbunit-rules/tree/master/cdi[DBUnit rules CDI^].
+
+The first enables CDI in JUnit tests and the second enables DBUnit though a CDI interceptor.
+
+=== Classpath dependencies
+
+First we need DBUnit CDI:
+.pom.xml
+----
+include::{basedir}/pom.xml[tags=dbunit-cdi]
+----
+
+And also DeltaSpike control module:
+
+----
+include::{basedir}/pom.xml[tags=test-control]
+----
+<1> DeltaSpike core module is base of all DeltaSpike modules
+<2> Test control module api and impl
+<3> CDI control OWB dependency, it is responsible for bootstraping CDI container
+<4> OpenWebBeans as CDI implementation
+
+
+=== Configuration
+For configuration we will need a beans.xml which enables DBUnit CDI interceptor:
+
+./src/test/resources/META-INF/beans.xml
+----
+include::{metainf}/beans.xml
+----
+
+And `apache-deltaspike.properties` to set our tests as CDI beans:
+
+./src/test/resources/META-INF/apache-deltaspike.properties
+----
+include::{metainf}/apache-deltaspike.properties
+----
+
+The test itself must be a CDI bean so DBUnit Rules can intercept it.
+
+The last configuration needed is to produce a EntityManager for tests:
+
+[source,java,linenums]
+----
+include::{sourcedir}/com/github/dbunit/rules/sample/EntityManagerProducer.java[]
+----
+
+This entityManager will be used as a bridge to JDBC connection needed by DBUnit Rules.
+
+=== Example
+
+Here is a test example:
+
+[source,java,linenums]
+----
+include::{sourcedir}/com/github/dbunit/rules/sample/DBUnitRulesCDITest.java[tags=sample]
+}
+----
+<1> DeltaSpike JUnit runner that enables CDI in tests;
+<2> The EntityManager we produced in previous steps;
+<3> This annotation enables DBUnit CDI interceptor which will prepare database state before the test execution.
+
+All other features presented earlier, *except multiple databases*, are supported by DBUnit CDI.
+
+Here is `ExpectedDataSet` example:
+
+.src/test/resources/datasets/expectedUsers.yml
+----
+include::{datasetdir}/expectedUsers.yml[]
+----
+
+And the test:
+
+[source,java,linenums]
+----
+include::{sourcedir}/com/github/dbunit/rules/sample/DBUnitRulesCDITest.java[tags=expectedCDI]
+----
+
+
 == Ruling database in BDD tests
 
 

@@ -1,4 +1,4 @@
-= Ruling Database Testing with DBUnit Rules
+== Ruling Database Testing with https://github.com/rmpestano/dbunit-rules[DBUnit Rules^]
 
 Access documentation of this repo in https://rmpestano.github.io/dbunit-rules-sample/dbunit-rules.html[HTML^] and https://rmpestano.github.io/dbunit-rules-sample/dbunit-rules.pdf[PDF^].
 

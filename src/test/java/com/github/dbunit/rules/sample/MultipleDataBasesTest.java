@@ -60,9 +60,9 @@ public class MultipleDataBasesTest {
                 instance("exec2", new ConnectionHolderImpl(emProvider2.connection()));
 
         //programmatic seed db1
-        exec1.createDataSet(new DataSetModel("users.yml")); //<>
-        //seed db1
-        exec2.createDataSet(new DataSetModel("dataset-with-javascript.yml"));
+        exec1.createDataSet(new DataSetModel("users.yml"));
+
+        exec2.createDataSet(new DataSetModel("dataset-with-javascript.yml"));//seed db2
 
         //user comes from database represented by pu1
         User user = (User) emProvider.em().
