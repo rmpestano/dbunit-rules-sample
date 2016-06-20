@@ -32,13 +32,16 @@
             <version>2.4.1</version>
             <scope>test</scope>
         </dependency>
+        <!-- tag::hsqldb[]-->
         <dependency>
             <groupId>org.hsqldb</groupId>
             <artifactId>hsqldb</artifactId>
             <version>2.3.3</version>
             <scope>test</scope>
         </dependency>
+        <!-- end::hsqldb[]-->
 
+        <!-- tag::hibernate[]-->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
@@ -51,38 +54,47 @@
             <version>4.2.8.Final</version>
             <scope>test</scope>
         </dependency>
+        <!-- end::hibernate[]-->
 
+        <!-- tag::dbunit-rules[]-->
         <dependency>
             <groupId>com.github.dbunit-rules</groupId>
             <artifactId>core</artifactId>
             <version>${dbunit-rules.version}</version>
             <scope>test</scope>
         </dependency>
+        <!-- end::dbunit-rules[]-->
 
-        <!-- scriptable -->
+        <!-- tag::groovy-all[]-->
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy-all</artifactId>
             <version>2.4.6</version>
             <scope>test</scope>
         </dependency>
+        <!-- end::groovy-all[]-->
 
         <!-- CDI tests -->
 
+        <!-- tag::dbunit-cdi[]-->
         <dependency>
             <groupId>com.github.dbunit-rules</groupId>
             <artifactId>cdi</artifactId>
             <version>${dbunit-rules.version}</version>
             <scope>test</scope>
         </dependency>
+        <!-- end::dbunit-cdi[]-->
 
+        <!-- tag::dbunit-cucumber[]-->
         <dependency>
             <groupId>com.github.dbunit-rules</groupId>
             <artifactId>cucumber</artifactId>
             <version>${dbunit-rules.version}</version>
             <scope>test</scope>
         </dependency>
+        <!-- end::dbunit-cucumber[]-->
 
+        <!-- tag::test-control[]-->
         <dependency>
             <groupId>org.apache.deltaspike.modules</groupId>
             <artifactId>deltaspike-test-control-module-api</artifactId>
@@ -122,6 +134,7 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <!-- end::test-control[]-->
     </dependencies>
 
     <profiles>
@@ -140,6 +153,9 @@
                             <headerFooter>true</headerFooter>
                             <doctype>book</doctype>
                             <attributes>
+                                <sourcedir>${project.build.testSourceDirectory}</sourcedir>
+                                <datasetdir>${project.build.testSourceDirectory}/../resources/datasets</datasetdir>
+                                <basedir>${project.build.directory}/../</basedir>
                                 <imagesdir>./images</imagesdir>
                                 <docVersion>${project.version}</docVersion>
                             </attributes>

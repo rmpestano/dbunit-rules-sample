@@ -22,20 +22,24 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * Created by rmpestano on 6/19/16.
  */
+//tag::declaration[]
 @RunWith(JUnit4.class)
 public class DBUnitRulesCoreTest {
 
     @Rule
-    public EntityManagerProvider emProvider = EntityManagerProvider.instance("rulesDB");
+    public EntityManagerProvider emProvider = EntityManagerProvider.instance("rulesDB");  //<1>
 
     @Rule
-    public DBUnitRule dbUnitRule = DBUnitRule.instance(emProvider.connection());
+    public DBUnitRule dbUnitRule = DBUnitRule.instance(emProvider.connection()); //<2>
 
+//end::declaration[]
+
+//tag::sample[]
 
     @Test
-    @DataSet("users.yml")
+    @DataSet("users.yml") //<3>
     public void shouldListUsers() {
-        List<User> users = em().
+        List<User> users = em(). //<4>
                 createQuery("select u from User u").
                 getResultList();
         assertThat(users).
@@ -43,7 +47,9 @@ public class DBUnitRulesCoreTest {
                 isNotEmpty().
                 hasSize(2);
     }
+//end::sample[]
 
+    //tag::transaction[]
     @Test
     @DataSet("users.yml")
     public void shouldUpdateUser() {
@@ -52,7 +58,7 @@ public class DBUnitRulesCoreTest {
                 getSingleResult();
         assertThat(user).isNotNull();
         assertThat(user.getName()).isEqualTo("@realpestano");
-        tx().begin();
+        tx().begin(); //<1>
         user.setName("@rmpestano");
         em().merge(user);
         tx().commit();
@@ -77,9 +83,12 @@ public class DBUnitRulesCoreTest {
                 hasSize(1);
     }
 
+    //end::transaction[]
+
+    //tag::expected[]
     @Test
     @DataSet("users.yml")
-    @ExpectedDataSet(value = "expectedUser.yml",ignoreCols = "id")
+    @ExpectedDataSet(value = "expectedUser.yml",ignoreCols = "id") //<1>
     public void shouldAssertDatabaseUsingExpectedDataSet() {
         User user = (User) em().
                 createQuery("select u from User u  where u.id = 1").
@@ -89,9 +98,11 @@ public class DBUnitRulesCoreTest {
         em().remove(user);
         tx().commit();
     }
+    //end::expected[]
 
+    //tag::expected-regex[]
     @Test
-    @DataSet(cleanBefore = true)
+    @DataSet(cleanBefore = true) //<1>
     @ExpectedDataSet("expectedUsersRegex.yml")
     public void shouldAssertDatabaseUsingRegex() {
         User u = new User();
@@ -103,17 +114,21 @@ public class DBUnitRulesCoreTest {
         em().persist(u2);
         tx().commit();
     }
+    //end::expected-regex[]
 
+    //tag::scriptable-js[]
     @Test
     @DataSet(value = "dataset-with-javascript.yml",
-            cleanBefore = true,
-            disableConstraints = true)
+            cleanBefore = true,  //<1>
+            disableConstraints = true)  //<2>
     public void shouldSeedDatabaseUsingJavaScriptInDataset() {
         Tweet tweet = (Tweet) emProvider.em().createQuery("select t from Tweet t where t.id = 1").getSingleResult();
         assertThat(tweet).isNotNull();
         assertThat(tweet.getLikes()).isEqualTo(50);
     }
+    //end::scriptable-groovy[]
 
+    //tag::scriptable-groovy[]
     @Test
     @DataSet(value = "dataset-with-groovy.yml",
             cleanBefore = true,
@@ -125,4 +140,5 @@ public class DBUnitRulesCoreTest {
         Date now = sdf.parse(sdf.format(new Date()));
         assertThat(tweet.getDate()).isEqualTo(now);
     }
+    //end::scriptable-groovy[]
 }
