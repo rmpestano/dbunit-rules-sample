@@ -526,11 +526,13 @@ table.CodeRay td.code>pre{padding:0}
 </li>
 <li><a href="#scriptable_datasets">6. Scriptable datasets</a>
 <ul class="sectlevel2">
-<li><a href="#groovy_scriptable_dataset">6.1. Groovy scriptable dataset</a></li>
+<li><a href="#javascript_scriptable_dataset">6.1. Javascript scriptable dataset</a></li>
+<li><a href="#groovy_scriptable_dataset">6.2. Groovy scriptable dataset</a></li>
 </ul>
 </li>
 <li><a href="#multiple_databases">7. Multiple databases</a></li>
-<li><a href="#dbunit_rules_cdi">8. DBUnit Rules CDI</a></li>
+<li><a href="#ruling_database_in_cdi_tests">8. Ruling database in CDI tests</a></li>
+<li><a href="#ruling_database_in_bdd_tests">9. Ruling database in BDD tests</a></li>
 </ul>
 </div>
 </div>
@@ -564,12 +566,12 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 <div class="listingblock">
 <div class="content">
-<pre> &lt;dependency&gt;
-	&lt;groupId&gt;com.github.dbunit-rules&lt;/groupId&gt;
-	&lt;artifactId&gt;core&lt;/artifactId&gt;
- 	&lt;version&gt;0.8.0&lt;/version&gt;
-	&lt;scope&gt;test&lt;/scope&gt;
-  &lt;/dependency&gt;</pre>
+<pre>        &lt;dependency&gt;
+            &lt;groupId&gt;com.github.dbunit-rules&lt;/groupId&gt;
+            &lt;artifactId&gt;core&lt;/artifactId&gt;
+            &lt;version&gt;${dbunit-rules.version}&lt;/version&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -577,12 +579,12 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 <div class="listingblock">
 <div class="content">
-<pre> &lt;dependency&gt;
-	&lt;groupId&gt;org.hsqldb&lt;/groupId&gt;
-	&lt;artifactId&gt;hsqldb&lt;/artifactId&gt;
-	&lt;version&gt;2.3.3&lt;/version&gt;
-	&lt;scope&gt;test&lt;/scope&gt;
-  &lt;/dependency&gt;</pre>
+<pre>        &lt;dependency&gt;
+            &lt;groupId&gt;org.hsqldb&lt;/groupId&gt;
+            &lt;artifactId&gt;hsqldb&lt;/artifactId&gt;
+            &lt;version&gt;2.3.3&lt;/version&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -590,18 +592,18 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>&lt;dependency&gt;
-	&lt;groupId&gt;org.hibernate&lt;/groupId&gt;
-	&lt;artifactId&gt;hibernate-core&lt;/artifactId&gt;
-	&lt;version&gt;4.2.8.Final&lt;/version&gt;
-	&lt;scope&gt;provided&lt;/scope&gt;
-&lt;/dependency&gt;
-&lt;dependency&gt;
-	&lt;groupId&gt;org.hibernate&lt;/groupId&gt;
-        &lt;artifactId&gt;hibernate-entitymanager&lt;/artifactId&gt;
-        &lt;version&gt;4.2.8.Final&lt;/version&gt;
-        &lt;scope&gt;test&lt;/scope&gt;
-&lt;/dependency&gt;</pre>
+<pre>        &lt;dependency&gt;
+            &lt;groupId&gt;org.hibernate&lt;/groupId&gt;
+            &lt;artifactId&gt;hibernate-core&lt;/artifactId&gt;
+            &lt;version&gt;4.2.8.Final&lt;/version&gt;
+            &lt;scope&gt;provided&lt;/scope&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.hibernate&lt;/groupId&gt;
+            &lt;artifactId&gt;hibernate-entitymanager&lt;/artifactId&gt;
+            &lt;version&gt;4.2.8.Final&lt;/version&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -706,22 +708,24 @@ table.CodeRay td.code>pre{padding:0}
 19
 20
 21
+22
 </pre></td>
   <td class="code"><pre><span class="annotation">@RunWith</span>(JUnit4.class)
 <span class="directive">public</span> <span class="type">class</span> <span class="class">DBUnitRulesCoreTest</span> {
 
     <span class="annotation">@Rule</span>
-    <span class="directive">public</span> EntityManagerProvider emProvider = EntityManagerProvider.instance(<span class="string"><span class="delimiter">&quot;</span><span class="content">rulesDB</span><span class="delimiter">&quot;</span></span>); <i class="conum" data-value="1"></i><b>(1)</b>
+    <span class="directive">public</span> EntityManagerProvider emProvider = EntityManagerProvider.instance(<span class="string"><span class="delimiter">&quot;</span><span class="content">rulesDB</span><span class="delimiter">&quot;</span></span>);  <i class="conum" data-value="1"></i><b>(1)</b>
 
     <span class="annotation">@Rule</span>
     <span class="directive">public</span> DBUnitRule dbUnitRule = DBUnitRule.instance(emProvider.connection()); <i class="conum" data-value="2"></i><b>(2)</b>
 
+
     <span class="annotation">@Test</span>
-    <span class="annotation">@DataSet</span>(value = <span class="string"><span class="delimiter">&quot;</span><span class="content">users.yml</span><span class="delimiter">&quot;</span></span>) <i class="conum" data-value="3"></i><b>(3)</b>
+    <span class="annotation">@DataSet</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">users.yml</span><span class="delimiter">&quot;</span></span>) <i class="conum" data-value="3"></i><b>(3)</b>
     <span class="directive">public</span> <span class="type">void</span> shouldListUsers() {
-        <span class="predefined-type">List</span>&lt;User&gt; users = em().  <i class="conum" data-value="4"></i><b>(4)</b>
-                           createQuery(<span class="string"><span class="delimiter">&quot;</span><span class="content">select u from User u</span><span class="delimiter">&quot;</span></span>).
-                           getResultList();
+        <span class="predefined-type">List</span>&lt;User&gt; users = em(). <i class="conum" data-value="4"></i><b>(4)</b>
+                createQuery(<span class="string"><span class="delimiter">&quot;</span><span class="content">select u from User u</span><span class="delimiter">&quot;</span></span>).
+                getResultList();
         assertThat(users).
                 isNotNull().
                 isNotEmpty().
@@ -905,7 +909,7 @@ table.CodeRay td.code>pre{padding:0}
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Database state after test will be compared with dataset provided by <code>@ExpectedDataSet</code> annotation.</td>
+<td>Database state after test will be compared with dataset provided by <code>@ExpectedDataSet</code>.</td>
 </tr>
 </table>
 </div>
@@ -944,10 +948,10 @@ Actual   :@realpestano
 <div class="title">src/test/resources/dataset/expectedUsersRegex.yml</div>
 <div class="content">
 <pre>user:
-  - id: "regex:\\d+" #any number
-    name: regex:^expected user.* #starts with example
   - id: "regex:\\d+"
-    name: regex:.*user2$ #ends with regex</pre>
+    name: regex:^expected user.* #expected user1
+  - id: "regex:\\d+"
+    name: regex:.*user2$ #expected user2</pre>
 </div>
 </div>
 <div class="listingblock">
@@ -1056,8 +1060,10 @@ When you use a dataset like users.yml in @DataSet dbunit will use <code>CLEAN_IN
 </tr></table></code></pre>
 </div>
 </div>
+<div class="sect2">
+<h3 id="javascript_scriptable_dataset"><a class="anchor" href="#javascript_scriptable_dataset"></a>6.1. Javascript scriptable dataset</h3>
 <div class="paragraph">
-<p>and the following dataset:</p>
+<p>Following is a dataset which uses Javascript:</p>
 </div>
 <div class="listingblock">
 <div class="title">src/test/resources/datasets/dataset-with-javascript.yml</div>
@@ -1092,16 +1098,42 @@ When you use a dataset like users.yml in @DataSet dbunit will use <code>CLEAN_IN
 7
 8
 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
 </pre></td>
   <td class="code"><pre>    <span class="annotation">@Test</span>
     <span class="annotation">@DataSet</span>(value = <span class="string"><span class="delimiter">&quot;</span><span class="content">dataset-with-javascript.yml</span><span class="delimiter">&quot;</span></span>,
-            cleanBefore = <span class="predefined-constant">true</span>, <i class="conum" data-value="1"></i><b>(1)</b>
-            disableConstraints = <span class="predefined-constant">true</span>) <i class="conum" data-value="2"></i><b>(2)</b>
-    <span class="directive">public</span> <span class="type">void</span> shouldReplaceLikesUsingJavaScriptInDataset() {
+            cleanBefore = <span class="predefined-constant">true</span>,  <i class="conum" data-value="1"></i><b>(1)</b>
+            disableConstraints = <span class="predefined-constant">true</span>)  <i class="conum" data-value="2"></i><b>(2)</b>
+    <span class="directive">public</span> <span class="type">void</span> shouldSeedDatabaseUsingJavaScriptInDataset() {
         Tweet tweet = (Tweet) emProvider.em().createQuery(<span class="string"><span class="delimiter">&quot;</span><span class="content">select t from Tweet t where t.id = 1</span><span class="delimiter">&quot;</span></span>).getSingleResult();
         assertThat(tweet).isNotNull();
         assertThat(tweet.getLikes()).isEqualTo(<span class="integer">50</span>);
-    }</pre></td>
+    }
+
+    <span class="annotation">@Test</span>
+    <span class="annotation">@DataSet</span>(value = <span class="string"><span class="delimiter">&quot;</span><span class="content">dataset-with-groovy.yml</span><span class="delimiter">&quot;</span></span>,
+            cleanBefore = <span class="predefined-constant">true</span>,
+            disableConstraints = <span class="predefined-constant">true</span>)
+    <span class="directive">public</span> <span class="type">void</span> shouldSeedDatabaseUsingGroovyInDataset() <span class="directive">throws</span> <span class="exception">ParseException</span> {
+        Tweet tweet = (Tweet) emProvider.em().createQuery(<span class="string"><span class="delimiter">&quot;</span><span class="content">select t from Tweet t where t.id = '1'</span><span class="delimiter">&quot;</span></span>).getSingleResult();
+        assertThat(tweet).isNotNull();
+        <span class="predefined-type">SimpleDateFormat</span> sdf = <span class="keyword">new</span> <span class="predefined-type">SimpleDateFormat</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">yyyy-MM-dd</span><span class="delimiter">&quot;</span></span>);<span class="comment">//remove time</span>
+        <span class="predefined-type">Date</span> now = sdf.parse(sdf.format(<span class="keyword">new</span> <span class="predefined-type">Date</span>()));
+        assertThat(tweet.getDate()).isEqualTo(now);
+    }
+}</pre></td>
 </tr></table></code></pre>
 </div>
 </div>
@@ -1143,23 +1175,25 @@ If we declare <code>User</code> table in <code>dataset-with-javascript.yml</code
 </tr>
 </table>
 </div>
+</div>
 <div class="sect2">
-<h3 id="groovy_scriptable_dataset"><a class="anchor" href="#groovy_scriptable_dataset"></a>6.1. Groovy scriptable dataset</h3>
+<h3 id="groovy_scriptable_dataset"><a class="anchor" href="#groovy_scriptable_dataset"></a>6.2. Groovy scriptable dataset</h3>
 <div class="paragraph">
 <p>Javascript comes by default in JDK but you can use other script languages like <code>Groovy</code>, to do so you need to add it to test classpath:</p>
 </div>
 <div class="listingblock">
+<div class="title">pom.xml</div>
 <div class="content">
-<pre>&lt;dependency&gt;
-	&lt;groupId&gt;org.codehaus.groovy&lt;/groupId&gt;
-        &lt;artifactId&gt;groovy-all&lt;/artifactId&gt;
-        &lt;version&gt;2.4.6&lt;/version&gt;
-        &lt;scope&gt;test&lt;/scope&gt;
-&lt;/dependency&gt;</pre>
+<pre>        &lt;dependency&gt;
+            &lt;groupId&gt;org.codehaus.groovy&lt;/groupId&gt;
+            &lt;artifactId&gt;groovy-all&lt;/artifactId&gt;
+            &lt;version&gt;2.4.6&lt;/version&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>If Groovy is not in classpath we receive a warn (maybe we should fail, what do you think?):</p>
+<p>If Groovy is not present in classpath we&#8217;ll receive a <em>warn message</em> (maybe we should fail, what do you think?):</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1206,7 +1240,7 @@ If we declare <code>User</code> table in <code>dataset-with-javascript.yml</code
 11
 </pre></td>
   <td class="code"><pre>    <span class="annotation">@Test</span>
-    <span class="annotation">@DataSet</span>(value = <span class="string"><span class="delimiter">&quot;</span><span class="content">groovy-with-date-replacements.yml</span><span class="delimiter">&quot;</span></span>,
+    <span class="annotation">@DataSet</span>(value = <span class="string"><span class="delimiter">&quot;</span><span class="content">dataset-with-groovy.yml</span><span class="delimiter">&quot;</span></span>,
             cleanBefore = <span class="predefined-constant">true</span>,
             disableConstraints = <span class="predefined-constant">true</span>)
     <span class="directive">public</span> <span class="type">void</span> shouldSeedDatabaseUsingGroovyInDataset() <span class="directive">throws</span> <span class="exception">ParseException</span> {
@@ -1225,11 +1259,200 @@ If we declare <code>User</code> table in <code>dataset-with-javascript.yml</code
 <div class="sect1">
 <h2 id="multiple_databases"><a class="anchor" href="#multiple_databases"></a>7. Multiple databases</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>Multiple databases can be tested by using multiple DBUnit rule and Entity manager providers:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><table class="CodeRay"><tr>
+  <td class="line-numbers"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+</pre></td>
+  <td class="code"><pre><span class="keyword">package</span> <span class="namespace">com.github.dbunit.rules.sample</span>;
+
+<span class="keyword">import</span> <span class="include">com.github.dbunit.rules.DBUnitRule</span>;
+<span class="keyword">import</span> <span class="include">com.github.dbunit.rules.api.dataset.DataSet</span>;
+<span class="keyword">import</span> <span class="include">com.github.dbunit.rules.api.dataset.DataSetExecutor</span>;
+<span class="keyword">import</span> <span class="include">com.github.dbunit.rules.api.dataset.DataSetModel</span>;
+<span class="keyword">import</span> <span class="include">com.github.dbunit.rules.connection.ConnectionHolderImpl</span>;
+<span class="keyword">import</span> <span class="include">com.github.dbunit.rules.dataset.DataSetExecutorImpl</span>;
+<span class="keyword">import</span> <span class="include">com.github.dbunit.rules.util.EntityManagerProvider</span>;
+<span class="keyword">import</span> <span class="include">org.junit.Rule</span>;
+<span class="keyword">import</span> <span class="include">org.junit.Test</span>;
+<span class="keyword">import</span> <span class="include">org.junit.runner.RunWith</span>;
+<span class="keyword">import</span> <span class="include">org.junit.runners.JUnit4</span>;
+
+<span class="keyword">import</span> <span class="include">static</span> <span class="include">org.assertj.core.api.Assertions.assertThat</span>;
+
+<span class="comment">/**
+ * Created by pestano on 23/07/15.
+ */</span>
+
+<span class="annotation">@RunWith</span>(JUnit4.class)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">MultipleDataBasesTest</span> {
+
+    <span class="annotation">@Rule</span>
+    <span class="directive">public</span> EntityManagerProvider emProvider = EntityManagerProvider.instance(<span class="string"><span class="delimiter">&quot;</span><span class="content">pu1</span><span class="delimiter">&quot;</span></span>);
+
+    <span class="annotation">@Rule</span>
+    <span class="directive">public</span> EntityManagerProvider emProvider2 = EntityManagerProvider.instance(<span class="string"><span class="delimiter">&quot;</span><span class="content">pu2</span><span class="delimiter">&quot;</span></span>);
+
+    <span class="annotation">@Rule</span>
+    <span class="directive">public</span> DBUnitRule rule1 = DBUnitRule.instance(<span class="string"><span class="delimiter">&quot;</span><span class="content">rule1</span><span class="delimiter">&quot;</span></span>,emProvider.connection()); <i class="conum" data-value="1"></i><b>(1)</b>
+
+    <span class="annotation">@Rule</span>
+    <span class="directive">public</span> DBUnitRule rule2 = DBUnitRule.instance(<span class="string"><span class="delimiter">&quot;</span><span class="content">rule2</span><span class="delimiter">&quot;</span></span>,emProvider2.connection());
+
+
+    <span class="annotation">@Test</span>
+    <span class="annotation">@DataSet</span>(value = <span class="string"><span class="delimiter">&quot;</span><span class="content">users.yml</span><span class="delimiter">&quot;</span></span>, executorId = <span class="string"><span class="delimiter">&quot;</span><span class="content">rule1</span><span class="delimiter">&quot;</span></span>) <i class="conum" data-value="2"></i><b>(2)</b>
+    <span class="directive">public</span> <span class="type">void</span> shouldSeedDatabaseUsingPu1() {
+        User user = (User) emProvider.em().
+                createQuery(<span class="string"><span class="delimiter">&quot;</span><span class="content">select u from User u where u.id = 1</span><span class="delimiter">&quot;</span></span>).getSingleResult();
+        assertThat(user).isNotNull();
+        assertThat(user.getId()).isEqualTo(<span class="integer">1</span>);
+    }
+
+    <span class="annotation">@Test</span>
+    <span class="annotation">@DataSet</span>(value = <span class="string"><span class="delimiter">&quot;</span><span class="content">users.yml</span><span class="delimiter">&quot;</span></span>, executorId = <span class="string"><span class="delimiter">&quot;</span><span class="content">rule2</span><span class="delimiter">&quot;</span></span>)
+    <span class="directive">public</span> <span class="type">void</span> shouldSeedDatabaseUsingPu2() {
+        User user = (User) emProvider2.em().
+                createQuery(<span class="string"><span class="delimiter">&quot;</span><span class="content">select u from User u where u.id = 1</span><span class="delimiter">&quot;</span></span>).getSingleResult();
+        assertThat(user).isNotNull();
+        assertThat(user.getId()).isEqualTo(<span class="integer">1</span>);
+    }
+
+    <span class="annotation">@Test</span> <i class="conum" data-value="3"></i><b>(3)</b>
+    <span class="directive">public</span> <span class="type">void</span> shouldSeedDatabaseUsingMultiplePus() {
+        DataSetExecutor exec1 = DataSetExecutorImpl.
+                instance(<span class="string"><span class="delimiter">&quot;</span><span class="content">exec1</span><span class="delimiter">&quot;</span></span>, <span class="keyword">new</span> ConnectionHolderImpl(emProvider.connection()));
+        DataSetExecutor exec2 = DataSetExecutorImpl.
+                instance(<span class="string"><span class="delimiter">&quot;</span><span class="content">exec2</span><span class="delimiter">&quot;</span></span>, <span class="keyword">new</span> ConnectionHolderImpl(emProvider2.connection()));
+
+        <span class="comment">//programmatic seed db1</span>
+        exec1.createDataSet(<span class="keyword">new</span> DataSetModel(<span class="string"><span class="delimiter">&quot;</span><span class="content">users.yml</span><span class="delimiter">&quot;</span></span>)); <span class="comment">//&lt;&gt;</span>
+        <span class="comment">//seed db1</span>
+        exec2.createDataSet(<span class="keyword">new</span> DataSetModel(<span class="string"><span class="delimiter">&quot;</span><span class="content">dataset-with-javascript.yml</span><span class="delimiter">&quot;</span></span>));
+
+        <span class="comment">//user comes from database represented by pu1</span>
+        User user = (User) emProvider.em().
+                createQuery(<span class="string"><span class="delimiter">&quot;</span><span class="content">select u from User u where u.id = 1</span><span class="delimiter">&quot;</span></span>).getSingleResult();
+        assertThat(user).isNotNull();
+        assertThat(user.getId()).isEqualTo(<span class="integer">1</span>);
+
+        <span class="comment">//tweets comes from pu2</span>
+        Tweet tweet = (Tweet) emProvider.em().createQuery(<span class="string"><span class="delimiter">&quot;</span><span class="content">select t from Tweet t where t.id = 1</span><span class="delimiter">&quot;</span></span>).getSingleResult();
+        assertThat(tweet).isNotNull();
+        assertThat(tweet.getLikes()).isEqualTo(<span class="integer">50</span>);
+    }
+
+}</pre></td>
+</tr></table></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td><code>rule1</code> is the id of DataSetExecutor, the component responsible for database initialization in DBUnit Rules.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>here we match dataset executor id in @DataSet annotation so in this test we are going to use database from <code>pu1</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>For multiple databases in same test we need to initialize database state <code>programmatically</code>.</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="ruling_database_in_cdi_tests"><a class="anchor" href="#ruling_database_in_cdi_tests"></a>8. Ruling database in CDI tests</h2>
+<div class="sectionbody">
 
 </div>
 </div>
 <div class="sect1">
-<h2 id="dbunit_rules_cdi"><a class="anchor" href="#dbunit_rules_cdi"></a>8. DBUnit Rules CDI</h2>
+<h2 id="ruling_database_in_bdd_tests"><a class="anchor" href="#ruling_database_in_bdd_tests"></a>9. Ruling database in BDD tests</h2>
 <div class="sectionbody">
 
 </div>
@@ -1243,7 +1466,7 @@ If we declare <code>User</code> table in <code>dataset-with-javascript.yml</code
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-06-19 23:57:30 UTC
+Last updated 2016-06-20 01:43:49 UTC
 </div>
 </div>
 </body>
