@@ -59,7 +59,7 @@
         <dependency>
             <groupId>com.github.dbunit-rules</groupId>
             <artifactId>core</artifactId>
-            <version>${0.8.0}</version>
+            <version>0.8.0</version>
             <scope>test</scope>
         </dependency>
         <!-- end::dbunit-rules[]-->
@@ -79,7 +79,7 @@
         <dependency>
             <groupId>com.github.dbunit-rules</groupId>
             <artifactId>cdi</artifactId>
-            <version>${0.8.0}</version>
+            <version>0.8.0</version>
             <scope>test</scope>
         </dependency>
         <!-- end::dbunit-cdi[]-->
@@ -88,7 +88,7 @@
         <dependency>
             <groupId>com.github.dbunit-rules</groupId>
             <artifactId>cucumber</artifactId>
-            <version>${0.8.0}</version>
+            <version>0.8.0</version>
             <scope>test</scope>
         </dependency>
         <!-- end::dbunit-cucumber[]-->
