@@ -1,6 +1,10 @@
 == Ruling Database Testing with https://github.com/rmpestano/dbunit-rules[DBUnit Rules^]
 
-Access documentation of this repo in https://rmpestano.github.io/dbunit-rules-sample/dbunit-rules.html[HTML^] and https://rmpestano.github.io/dbunit-rules-sample/dbunit-rules.pdf[PDF^].
+image:https://travis-ci.org/rmpestano/dbunit-rules-sample.svg[Build Status (Travis CI), link=https://travis-ci.org/rmpestano/dbunit-rules-sample]
+
+
+Blog post about this project: https://rpestano.wordpress.com/2016/06/20/ruling-database-testing-with-dbunit-rules/
+
 
 
 
