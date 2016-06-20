@@ -1,4 +1,4 @@
-package com.github.dbunit.rules.sample;
+package com.github.dbunit.rules.sample.cdi;
 
 
 import com.github.dbunit.rules.util.EntityManagerProvider;

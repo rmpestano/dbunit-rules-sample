@@ -329,7 +329,7 @@ The last configuration needed is to produce a EntityManager for tests:
 
 [source,java,linenums]
 ----
-include::{sourcedir}/com/github/dbunit/rules/sample/EntityManagerProducer.java[]
+include::{sourcedir}/com/github/dbunit/rules/sample/cdi/EntityManagerProducer.java[]
 ----
 
 This entityManager will be used as a bridge to JDBC connection needed by DBUnit Rules.
@@ -340,7 +340,7 @@ Here is a test example:
 
 [source,java,linenums]
 ----
-include::{sourcedir}/com/github/dbunit/rules/sample/DBUnitRulesCDITest.java[tags=sample]
+include::{sourcedir}/com/github/dbunit/rules/sample/cdi/DBUnitRulesCDITest.java[tags=sample]
 }
 ----
 <1> DeltaSpike JUnit runner that enables CDI in tests;
@@ -360,7 +360,7 @@ And the test:
 
 [source,java,linenums]
 ----
-include::{sourcedir}/com/github/dbunit/rules/sample/DBUnitRulesCDITest.java[tags=expectedCDI]
+include::{sourcedir}/com/github/dbunit/rules/sample/cdi/DBUnitRulesCDITest.java[tags=expectedCDI]
 ----
 
 

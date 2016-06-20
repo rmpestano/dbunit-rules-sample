@@ -1,7 +1,8 @@
-package com.github.dbunit.rules.sample;
+package com.github.dbunit.rules.sample.cdi;
 
 import com.github.dbunit.rules.api.dataset.ExpectedDataSet;
 import com.github.dbunit.rules.cdi.api.UsingDataSet;
+import com.github.dbunit.rules.sample.User;
 import org.apache.deltaspike.testcontrol.api.junit.CdiTestRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
