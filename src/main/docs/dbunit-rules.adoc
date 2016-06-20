@@ -409,3 +409,5 @@ And finally our cucumber step definitions:
 ----
 include::{sourcedir}/com/github/dbunit/rules/sample/bdd/SearchUsersSteps.java[]
 ----
+
+NOTE: Living documentation of DBUnit Rules is based on its https://github.com/rmpestano/dbunit-rules/tree/master/cdi/src/test/java/com/github/dbunit/rules/bdd[BDD tests^], access it here: http://rmpestano.github.io/dbunit-rules/documentation.html.
