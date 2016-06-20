@@ -201,7 +201,7 @@ public class Tweet {
     private Integer likes;
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Calendar date;
+    private Date date;
 
     @ManyToOne(fetch = FetchType.LAZY)
     User user;
@@ -313,14 +313,14 @@ For configuration we will need a beans.xml which enables DBUnit CDI interceptor:
 
 ./src/test/resources/META-INF/beans.xml
 ----
-include::{metainf}/beans.xml
+include::{metainf}/beans.xml[]
 ----
 
 And `apache-deltaspike.properties` to set our tests as CDI beans:
 
 ./src/test/resources/META-INF/apache-deltaspike.properties
 ----
-include::{metainf}/apache-deltaspike.properties
+include::{metainf}/apache-deltaspike.properties[]
 ----
 
 The test itself must be a CDI bean so DBUnit Rules can intercept it.
