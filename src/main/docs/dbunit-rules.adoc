@@ -200,7 +200,7 @@ public class Tweet {
 
     private Integer likes;
 
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date date;
 
     @ManyToOne(fetch = FetchType.LAZY)
