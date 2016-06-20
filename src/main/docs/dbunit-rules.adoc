@@ -378,20 +378,20 @@ Just add following dependency to your classpath:
 include::{basedir}/pom.xml[tags=dbunit-cucumber]
 ----
 
-Now you just need to use *CdiCucumberTestRunner* to have `Cucumber`, `CDI` and `DBUnit` to manage database on your BDD tests.
+Now you just need to use *CdiCucumberTestRunner* to have `Cucumber`, `CDI` and `DBUnit` on your BDD tests.
 
 === Example
 
 First we need a feature file:
 
-.src/test/resources/search-users.feature
+.src/test/resources/features/search-users.feature
 ----
 include::{featuresdir}/search-users.feature[]
 ----
 
-The a dataset to prepare our database:
+Then a dataset to prepare our database:
 
-.src/test/resources/search-users.feature
+.src/test/resources/datasets/usersWithTweet.json
 ----
 include::{datasetdir}/usersWithTweet.json[]
 ----

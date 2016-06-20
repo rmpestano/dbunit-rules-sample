@@ -1,7 +1,7 @@
 Feature: Search users
 In order to find users quickly
 As a recruiter
-I want to be able to query users by meaningful search criteria.
+I want to be able to query users by its tweets.
 
 Scenario Outline: Search users by tweet content
 
