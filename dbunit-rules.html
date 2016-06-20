@@ -1064,7 +1064,7 @@ When you use a dataset like users.yml in @DataSet dbunit will use <code>CLEAN_IN
     <span class="directive">private</span> <span class="predefined-type">Integer</span> likes;
 
     <span class="annotation">@Temporal</span>(TemporalType.TIMESTAMP)
-    <span class="directive">private</span> <span class="predefined-type">Calendar</span> date;
+    <span class="directive">private</span> <span class="predefined-type">Date</span> date;
 
     <span class="annotation">@ManyToOne</span>(fetch = FetchType.LAZY)
     User user;</pre></td>
@@ -1551,7 +1551,15 @@ If we declare <code>User</code> table in <code>dataset-with-javascript.yml</code
 <div class="listingblock">
 <div class="title">/src/test/resources/META-INF/beans.xml</div>
 <div class="content">
-<pre>include::{metainf}/beans.xml</pre>
+<pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;beans xmlns="http://java.sun.com/xml/ns/javaee"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/beans_1_0.xsd"&gt;
+
+       &lt;interceptors&gt;
+              &lt;class&gt;com.github.dbunit.rules.cdi.DBUnitInterceptor&lt;/class&gt;
+       &lt;/interceptors&gt;
+&lt;/beans&gt;</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1560,7 +1568,7 @@ If we declare <code>User</code> table in <code>dataset-with-javascript.yml</code
 <div class="listingblock">
 <div class="title">/src/test/resources/META-INF/apache-deltaspike.properties</div>
 <div class="content">
-<pre>include::{metainf}/apache-deltaspike.properties</pre>
+<pre>deltaspike.testcontrol.use_test_class_as_cdi_bean=true</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -2003,7 +2011,7 @@ Examples:
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-06-20 04:14:35 UTC
+Last updated 2016-06-20 05:33:07 UTC
 </div>
 </div>
 </body>
