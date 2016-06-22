@@ -106,7 +106,7 @@ And the JUnit test:
 
 [source, java, linenums]
 ----
-include::{sourcedir}/com/github/dbunit/rules/sample/DBUnitRulesCoreTest.java[tags=declaration;sample]
+include::{testdir}/DBUnitRulesCoreTest.java[tags=declaration;sample]
 }
 ----
 <1> EntityManagerProvider is a JUnit rule that initializes a JPA entity manager before each *test class*. `rulesDB` is the name of persistence unit;
@@ -120,7 +120,7 @@ EntityManagerProvider rule provides entity manager transactions so you can inser
 
 [source, java, linenums]
 ----
-include::{sourcedir}/com/github/dbunit/rules/sample/DBUnitRulesCoreTest.java[tags=transaction]
+include::{testdir}/DBUnitRulesCoreTest.java[tags=transaction]
 ----
 <1> `tx()` is a shortcut for the entity manager transaction provided by EntityManagerProvider.
 
@@ -144,7 +144,7 @@ And the following test:
 
 [source, java, linenums]
 ----
-include::{sourcedir}/com/github/dbunit/rules/sample/DBUnitRulesCoreTest.java[tags=expected]
+include::{testdir}/DBUnitRulesCoreTest.java[tags=expected]
 ----
 <1> Database state after test will be compared with dataset provided by `@ExpectedDataSet`.
 
@@ -174,7 +174,7 @@ include::{datasetdir}/expectedUsersRegex.yml[]
 
 [source, java, linenums]
 ----
-include::{sourcedir}/com/github/dbunit/rules/sample/DBUnitRulesCoreTest.java[tags=expected-regex]
+include::{testdir}/DBUnitRulesCoreTest.java[tags=expected-regex]
 ----
 <1> You don't need to initialize a dataset but can use `cleanBefore` to clear database before testing.
 
@@ -188,23 +188,7 @@ For this example we will introduce another JPA entity:
 
 [source,java,linenums]
 ----
-@Entity
-public class Tweet {
-
-    @Id
-    @GeneratedValue
-    private long id;
-
-    @Size(min = 1, max = 140)
-    private String content;
-
-    private Integer likes;
-
-    @Temporal(TemporalType.DATE)
-    private Date date;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    User user;
+include::{sourcedir}/Tweet.java[tags=tweet]
 ----
 
 === Javascript scriptable dataset
@@ -221,7 +205,7 @@ and the junit test:
 
 [source,java,linenums]
 ----
-include::{sourcedir}/com/github/dbunit/rules/sample/DBUnitRulesCoreTest.java[tags=scriptable-js]
+include::{testdir}/DBUnitRulesCoreTest.java[tags=scriptable-js]
 ----
 <1> As we don't declared `User` table in dataset it will not be cleared by `CLEAN_INSERT` seeding strategy so we need cleanBefore to avoid conflict with other tests that insert users.
 <2> Disabling constraints is necessary because `Tweet` table depends on `User`.
@@ -268,7 +252,7 @@ And here is the test:
 
 [source,java,linenums]
 ----
-include::{sourcedir}/com/github/dbunit/rules/sample/DBUnitRulesCoreTest.java[tags=scriptable-groovy]
+include::{testdir}/DBUnitRulesCoreTest.java[tags=scriptable-groovy]
 ----
 
 == Multiple databases
@@ -277,7 +261,7 @@ Multiple databases can be tested by using multiple DBUnit rule and Entity manage
 
 [source,java,linenums]
 ----
-include::{sourcedir}/com/github/dbunit/rules/sample/MultipleDataBasesTest.java[]
+include::{testdir}/MultipleDataBasesTest.java[]
 ----
 <1> `rule1` is the id of DataSetExecutor, the component responsible for database initialization in DBUnit Rules.
 <2> here we match dataset executor id in @DataSet annotation so in this test we are going to use database from `pu1`.
@@ -329,7 +313,7 @@ The last configuration needed is to produce a EntityManager for tests:
 
 [source,java,linenums]
 ----
-include::{sourcedir}/com/github/dbunit/rules/sample/cdi/EntityManagerProducer.java[]
+include::{testdir}/cdi/EntityManagerProducer.java[]
 ----
 
 This entityManager will be used as a bridge to JDBC connection needed by DBUnit Rules.
@@ -340,7 +324,7 @@ Here is a test example:
 
 [source,java,linenums]
 ----
-include::{sourcedir}/com/github/dbunit/rules/sample/cdi/DBUnitRulesCDITest.java[tags=sample]
+include::{testdir}/cdi/DBUnitRulesCDITest.java[tags=sample]
 }
 ----
 <1> DeltaSpike JUnit runner that enables CDI in tests;
@@ -360,7 +344,7 @@ And the test:
 
 [source,java,linenums]
 ----
-include::{sourcedir}/com/github/dbunit/rules/sample/cdi/DBUnitRulesCDITest.java[tags=expectedCDI]
+include::{testdir}/cdi/DBUnitRulesCDITest.java[tags=expectedCDI]
 ----
 
 
@@ -400,14 +384,14 @@ Now a Cucumber runner test entry point:
 
 [source,java,linenums]
 ----
-include::{sourcedir}/com/github/dbunit/rules/sample/bdd/DBUnitRulesBddTest.java[]
+include::{testdir}/bdd/DBUnitRulesBddTest.java[]
 ----
 
 And finally our cucumber step definitions:
 
 [source,java,linenums]
 ----
-include::{sourcedir}/com/github/dbunit/rules/sample/bdd/SearchUsersSteps.java[]
+include::{testdir}/bdd/SearchUsersSteps.java[]
 ----
 
 NOTE: Living documentation of _DBUnit Rules_ is based on its https://github.com/rmpestano/dbunit-rules/tree/master/cdi/src/test/java/com/github/dbunit/rules/bdd[BDD tests^], you can access it here: http://rmpestano.github.io/dbunit-rules/documentation.html.

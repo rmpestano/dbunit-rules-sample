@@ -8,6 +8,7 @@ import java.util.Date;
 /**
  * Created by pestano on 22/07/15.
  */
+//tag::tweet[]
 @Entity
 public class Tweet {
 
@@ -25,6 +26,8 @@ public class Tweet {
 
     @ManyToOne(fetch = FetchType.LAZY)
     User user;
+
+//end::tweet[]
 
     public String getContent() {
         return content;

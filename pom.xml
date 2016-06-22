@@ -148,7 +148,8 @@
                             <headerFooter>true</headerFooter>
                             <doctype>book</doctype>
                             <attributes>
-                                <sourcedir>${project.build.testSourceDirectory}</sourcedir>
+                                <sourcedir>${project.build.sourceDirectory}/com/github/dbunit/rules/sample</sourcedir>
+                                <testdir>${project.build.testSourceDirectory}/com/github/dbunit/rules/sample</testdir>
                                 <datasetdir>${project.build.testSourceDirectory}/../resources/datasets</datasetdir>
                                 <featuresdir>${project.build.testSourceDirectory}/../resources/features</featuresdir>
                                 <metainf>${project.build.testSourceDirectory}/../resources/META-INF</metainf>
