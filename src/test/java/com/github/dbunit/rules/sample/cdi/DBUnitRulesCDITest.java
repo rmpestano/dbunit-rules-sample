@@ -29,7 +29,7 @@ public class DBUnitRulesCDITest {
     @Test
     @UsingDataSet("users.yml") //<3>
     public void shouldListUsers() {
-        List<User> users = em().
+        List<User> users = em.
                 createQuery("select u from User u").
                 getResultList();
         assertThat(users).
