@@ -117,9 +117,10 @@ include::{testdir}/DBUnitRulesCoreTest.java[tags=declaration;sample]
 ----
 <1> EntityManagerProvider is a JUnit rule that initializes a JPA entity manager before each *test class*. `rulesDB` is the name of persistence unit;
 <2> DBUnit rule reads *@DataSet* annotations and initializes database before each *test method*. This rule only needs a *JDBC* connection to be created.
-<3> The dataSet configuration itself, https://github.com/rmpestano/dbunit-rules/blob/master/core/src/main/java/com/github/dbunit/rules/api/dataset/DataSet.java#L14[see here^] for all available configuration options. 
+<3> The dataSet configuration itself, https://github.com/rmpestano/dbunit-rules/blob/master/core/src/main/java/com/github/dbunit/rules/api/dataset/DataSet.java#L14[see here^] for all available configuration options. Note that you can provide a comma separated list of datasets names here. 
 <4> *em()* is a shortcut (`import static com.github.dbunit.rules.util.EntityManagerProvider.em;`) for the EntityManager that was initialized by EntityManagerProvider rule. 
  
+TIP: There is a lot of https://github.com/rmpestano/dbunit-rules/tree/master/core/src/test/java/com/github/dbunit/rules[example tests here^]. 
 == Transactions 
 
 EntityManagerProvider rule provides entity manager transactions so you can insert/delete entities in your tests:
