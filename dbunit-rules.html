@@ -551,7 +551,7 @@ table.CodeRay td.code>pre{padding:0}
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>In this post I am going to talk about <a href="https://github.com/rmpestano/dbunit-rules" target="_blank">DBUnit Rules</a>, a small opensource project I maintain which aims to simplify database testing<sup class="footnote">[<a id="_footnoteref_1" class="footnote" href="#_footnote_1" title="View footnote.">1</a>]</sup>.</p>
+<p>In this article I&#8217;m going to talk about <a href="https://github.com/rmpestano/dbunit-rules" target="_blank">DBUnit Rules</a>, a small open source project I maintain which aims to simplify database testing<sup class="footnote">[<a id="_footnoteref_1" class="footnote" href="#_footnote_1" title="View footnote.">1</a>]</sup>.</p>
 </div>
 </div>
 </div>
@@ -680,17 +680,53 @@ table.CodeRay td.code>pre{padding:0}
 <h2 id="example"><a class="anchor" href="#example"></a>3. Example</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Create a yaml file which will be used to prepare database before the test:</p>
+<p>Create a yaml file which will be used to prepare database (with two users) before the test:</p>
 </div>
 <div class="listingblock">
 <div class="title">src/test/resources/dataset/users.yml</div>
 <div class="content">
-<pre>user:
-  - id: 1
+<pre>user: <i class="conum" data-value="1"></i><b>(1)</b>
+  - id: 1 <i class="conum" data-value="2"></i><b>(2)</b>
     name: "@realpestano"
   - id: 2
     name: "@dbunit"</pre>
 </div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Table name is followed by <code>:</code>, we can have multiple tables in the same file.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Table rows are separated by <code>-</code>.</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Be careful with <strong>spaces</strong>, wrong identation can lead to invalid dataset (principally in <code>yaml</code> datasets).
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+For more dataset examples, <a href="https://github.com/rmpestano/dbunit-rules/tree/master/core/src/test/resources/datasets" target="_blank">look here</a>.
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>And the JUnit test:</p>
@@ -864,8 +900,8 @@ table.CodeRay td.code>pre{padding:0}
 <div class="listingblock">
 <div class="title">src/test/resources/dataset/users.yml</div>
 <div class="content">
-<pre>user:
-  - id: 1
+<pre>user: <i class="conum" data-value="1"></i><b>(1)</b>
+  - id: 1 <i class="conum" data-value="2"></i><b>(2)</b>
     name: "@realpestano"
   - id: 2
     name: "@dbunit"</pre>
@@ -1651,7 +1687,7 @@ If we declare <code>User</code> table in <code>dataset-with-javascript.yml</code
     <span class="annotation">@Test</span>
     <span class="annotation">@UsingDataSet</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">users.yml</span><span class="delimiter">&quot;</span></span>) <i class="conum" data-value="3"></i><b>(3)</b>
     <span class="directive">public</span> <span class="type">void</span> shouldListUsers() {
-        <span class="predefined-type">List</span>&lt;User&gt; users = em().
+        <span class="predefined-type">List</span>&lt;User&gt; users = em.
                 createQuery(<span class="string"><span class="delimiter">&quot;</span><span class="content">select u from User u</span><span class="delimiter">&quot;</span></span>).
                 getResultList();
         assertThat(users).
@@ -1730,6 +1766,18 @@ If we declare <code>User</code> table in <code>dataset-with-javascript.yml</code
     }</pre></td>
 </tr></table></code></pre>
 </div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Since version <em>0.9.0</em> (To be released at the time of writing) transactions will be able to be managed automatically at test level (useful for expected datasets), see <a href="https://github.com/rmpestano/dbunit-rules/blob/master/core/src/test/java/com/github/dbunit/rules/TransactionIt.java#L46" target="_blank">example here</a>.
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
@@ -1998,7 +2046,7 @@ Living documentation of <em>DBUnit Rules</em> is based on its <a href="https://g
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-06-22 01:43:32 UTC
+Last updated 2016-06-22 14:55:09 UTC
 </div>
 </div>
 </body>
