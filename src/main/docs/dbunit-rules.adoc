@@ -21,7 +21,7 @@ In this article I'm going to talk about https://github.com/rmpestano/dbunit-rule
 
 == Introduction
 
-`DBUnit Rules` integrates http://junit.org/[JUnit^] and http://dbunit.sourceforge.net/[DBUnit^] through https://github.com/junit-team/junit4/wiki/Rules[JUnit rules^] and, in case of https://docs.jboss.org/weld/reference/latest/en-US/html_single/[CDI^] based tests, a https://docs.oracle.com/javaee/6/tutorial/doc/gkhjx.html[CDI interceptor^]. This powerful combination lets you easily prepare the database state for testing though *xml, json, xls or yaml* files.
+`DBUnit Rules` integrates http://junit.org/[JUnit^] and http://dbunit.sourceforge.net/[DBUnit^] through https://github.com/junit-team/junit4/wiki/Rules[JUnit rules^] and, in case of https://docs.jboss.org/weld/reference/latest/en-US/html_single/[CDI^] based tests, a https://docs.oracle.com/javaee/6/tutorial/doc/gkhjx.html[CDI interceptor^]. This powerful combination lets you easily prepare the database state for testing through *xml, json, xls or yaml* files.
 
 Most inspiration of DBUnit Rules was taken from https://docs.jboss.org/author/display/ARQ/Persistence[Arquillian extension persistence^] a library for database http://stackoverflow.com/questions/15524687/in-container-testing-with-junit[in-container integration tests^]. 
 
@@ -121,6 +121,7 @@ include::{testdir}/DBUnitRulesCoreTest.java[tags=declaration;sample]
 <4> *em()* is a shortcut (`import static com.github.dbunit.rules.util.EntityManagerProvider.em;`) for the EntityManager that was initialized by EntityManagerProvider rule. 
  
 TIP: There is a lot of https://github.com/rmpestano/dbunit-rules/tree/master/core/src/test/java/com/github/dbunit/rules[example tests here^]. 
+
 == Transactions 
 
 EntityManagerProvider rule provides entity manager transactions so you can insert/delete entities in your tests:
