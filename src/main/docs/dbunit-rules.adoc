@@ -171,7 +171,7 @@ Actual   :@realpestano
 -----
 ====
 
-TIP: Since version _0.9.0_ (To be released at the time of writing) transactions will be able to be managed automatically at test level (useful for expected datasets), see https://github.com/rmpestano/dbunit-rules/blob/master/core/src/test/java/com/github/dbunit/rules/TransactionIt.java#L46[example here^].
+TIP: Since version _0.9.0_ (To be released at the time of writing) transactions will be able to be managed automatically at test level (useful for _expected datasets_ cause you don't assert db changes inside the test), see https://github.com/rmpestano/dbunit-rules/blob/master/core/src/test/java/com/github/dbunit/rules/TransactionIt.java#L46[example here^].
 
 
 === Regular expressions
@@ -358,7 +358,7 @@ And the test:
 include::{testdir}/cdi/DBUnitRulesCDITest.java[tags=expectedCDI]
 ----
 
-TIP: Since version _0.9.0_ (To be released at the time of writing) transactions will be able to be managed automatically at test level (useful for expected datasets), see https://github.com/rmpestano/dbunit-rules/blob/master/cdi/src/test/java/com/github/dbunit/rules/TransactionCDIIt.java#L41[example here^].
+TIP: Since version _0.9.0_ (To be released at the time of writing) transactions will be able to be managed automatically at test level (useful for _expected datasets_ cause you don't assert db changes inside the test), see https://github.com/rmpestano/dbunit-rules/blob/master/cdi/src/test/java/com/github/dbunit/rules/TransactionCDIIt.java#L41[example here^].
 
 
 == Ruling database in BDD tests
