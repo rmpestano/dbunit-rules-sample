@@ -344,6 +344,8 @@ include::{testdir}/cdi/DBUnitRulesCDITest.java[tags=sample]
 
 All other features presented earlier, *except multiple databases*, are supported by DBUnit CDI.
 
+TIP: For more examples, look at https://github.com/rmpestano/dbunit-rules/tree/master/cdi/src/test/java/com/github/dbunit/rules[CDI module tests here^].
+
 Here is `ExpectedDataSet` example:
 
 .src/test/resources/datasets/expectedUsers.yml
