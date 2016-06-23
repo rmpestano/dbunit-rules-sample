@@ -518,29 +518,30 @@ table.CodeRay td.code>pre{padding:0}
 <li><a href="#introduction">1. Introduction</a></li>
 <li><a href="#setup_dbunit_rules">2. Setup DBUnit Rules</a></li>
 <li><a href="#example">3. Example</a></li>
-<li><a href="#database_assertion_with_expecteddataset">4. Database assertion with ExpectedDataSet</a>
+<li><a href="#transactions">4. Transactions</a></li>
+<li><a href="#database_assertion_with_expecteddataset">5. Database assertion with ExpectedDataSet</a>
 <ul class="sectlevel2">
-<li><a href="#regular_expressions">4.1. Regular expressions</a></li>
+<li><a href="#regular_expressions">5.1. Regular expressions</a></li>
 </ul>
 </li>
-<li><a href="#scriptable_datasets">5. Scriptable datasets</a>
+<li><a href="#scriptable_datasets">6. Scriptable datasets</a>
 <ul class="sectlevel2">
-<li><a href="#javascript_scriptable_dataset">5.1. Javascript scriptable dataset</a></li>
-<li><a href="#groovy_scriptable_dataset">5.2. Groovy scriptable dataset</a></li>
+<li><a href="#javascript_scriptable_dataset">6.1. Javascript scriptable dataset</a></li>
+<li><a href="#groovy_scriptable_dataset">6.2. Groovy scriptable dataset</a></li>
 </ul>
 </li>
-<li><a href="#multiple_databases">6. Multiple databases</a></li>
-<li><a href="#ruling_database_in_cdi_tests">7. Ruling database in CDI tests</a>
+<li><a href="#multiple_databases">7. Multiple databases</a></li>
+<li><a href="#ruling_database_in_cdi_tests">8. Ruling database in CDI tests</a>
 <ul class="sectlevel2">
-<li><a href="#classpath_dependencies">7.1. Classpath dependencies</a></li>
-<li><a href="#configuration">7.2. Configuration</a></li>
-<li><a href="#example_2">7.3. Example</a></li>
+<li><a href="#classpath_dependencies">8.1. Classpath dependencies</a></li>
+<li><a href="#configuration">8.2. Configuration</a></li>
+<li><a href="#example_2">8.3. Example</a></li>
 </ul>
 </li>
-<li><a href="#ruling_database_in_bdd_tests">8. Ruling database in BDD tests</a>
+<li><a href="#ruling_database_in_bdd_tests">9. Ruling database in BDD tests</a>
 <ul class="sectlevel2">
-<li><a href="#configuration_2">8.1. Configuration</a></li>
-<li><a href="#example_3">8.2. Example</a></li>
+<li><a href="#configuration_2">9.1. Configuration</a></li>
+<li><a href="#example_3">9.2. Example</a></li>
 </ul>
 </li>
 </ul>
@@ -558,7 +559,7 @@ table.CodeRay td.code>pre{padding:0}
 <h2 id="introduction"><a class="anchor" href="#introduction"></a>1. Introduction</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><code>DBUnit Rules</code> integrates <a href="http://junit.org/" target="_blank">JUnit</a> and <a href="http://dbunit.sourceforge.net/" target="_blank">DBUnit</a> through <a href="https://github.com/junit-team/junit4/wiki/Rules" target="_blank">JUnit rules</a> and, in case of <a href="https://docs.jboss.org/weld/reference/latest/en-US/html_single/" target="_blank">CDI</a> based tests, a <a href="https://docs.oracle.com/javaee/6/tutorial/doc/gkhjx.html" target="_blank">CDI interceptor</a>. This powerful combination lets you easily prepare the database state for testing though <strong>xml, json, xls or yaml</strong> files.</p>
+<p><code>DBUnit Rules</code> integrates <a href="http://junit.org/" target="_blank">JUnit</a> and <a href="http://dbunit.sourceforge.net/" target="_blank">DBUnit</a> through <a href="https://github.com/junit-team/junit4/wiki/Rules" target="_blank">JUnit rules</a> and, in case of <a href="https://docs.jboss.org/weld/reference/latest/en-US/html_single/" target="_blank">CDI</a> based tests, a <a href="https://docs.oracle.com/javaee/6/tutorial/doc/gkhjx.html" target="_blank">CDI interceptor</a>. This powerful combination lets you easily prepare the database state for testing through <strong>xml, json, xls or yaml</strong> files.</p>
 </div>
 <div class="paragraph">
 <p>Most inspiration of DBUnit Rules was taken from <a href="https://docs.jboss.org/author/display/ARQ/Persistence" target="_blank">Arquillian extension persistence</a> a library for database <a href="http://stackoverflow.com/questions/15524687/in-container-testing-with-junit" target="_blank">in-container integration tests</a>.</p>
@@ -809,11 +810,15 @@ For more dataset examples, <a href="https://github.com/rmpestano/dbunit-rules/tr
 </td>
 <td class="content">
 There is a lot of <a href="https://github.com/rmpestano/dbunit-rules/tree/master/core/src/test/java/com/github/dbunit/rules" target="_blank">example tests here</a>.
-== Transactions
 </td>
 </tr>
 </table>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="transactions"><a class="anchor" href="#transactions"></a>4. Transactions</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>EntityManagerProvider rule provides entity manager transactions so you can insert/delete entities in your tests:</p>
 </div>
@@ -899,7 +904,7 @@ There is a lot of <a href="https://github.com/rmpestano/dbunit-rules/tree/master
 </div>
 </div>
 <div class="sect1">
-<h2 id="database_assertion_with_expecteddataset"><a class="anchor" href="#database_assertion_with_expecteddataset"></a>4. Database assertion with ExpectedDataSet</h2>
+<h2 id="database_assertion_with_expecteddataset"><a class="anchor" href="#database_assertion_with_expecteddataset"></a>5. Database assertion with ExpectedDataSet</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Consider the following datasets:</p>
@@ -994,7 +999,7 @@ Actual   :@realpestano
 </table>
 </div>
 <div class="sect2">
-<h3 id="regular_expressions"><a class="anchor" href="#regular_expressions"></a>4.1. Regular expressions</h3>
+<h3 id="regular_expressions"><a class="anchor" href="#regular_expressions"></a>5.1. Regular expressions</h3>
 <div class="paragraph">
 <p>Expected datasets also alow <code>regexp</code> in datasets:</p>
 </div>
@@ -1065,7 +1070,7 @@ When you use a dataset like users.yml in @DataSet dbunit will use <code>CLEAN_IN
 </div>
 </div>
 <div class="sect1">
-<h2 id="scriptable_datasets"><a class="anchor" href="#scriptable_datasets"></a>5. Scriptable datasets</h2>
+<h2 id="scriptable_datasets"><a class="anchor" href="#scriptable_datasets"></a>6. Scriptable datasets</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>DBUnit Rules enables scripting in dataset for languages that implement JSR 233 - Scripting for the Java Platform, <a href="http://www.javaworld.com/article/2077792/java-se/scripting-on-the-java-platform.html" target="_blank">see this article</a> for more information.</p>
@@ -1116,7 +1121,7 @@ When you use a dataset like users.yml in @DataSet dbunit will use <code>CLEAN_IN
 </div>
 </div>
 <div class="sect2">
-<h3 id="javascript_scriptable_dataset"><a class="anchor" href="#javascript_scriptable_dataset"></a>5.1. Javascript scriptable dataset</h3>
+<h3 id="javascript_scriptable_dataset"><a class="anchor" href="#javascript_scriptable_dataset"></a>6.1. Javascript scriptable dataset</h3>
 <div class="paragraph">
 <p>Following is a dataset which uses Javascript:</p>
 </div>
@@ -1206,7 +1211,7 @@ If we declare <code>User</code> table in <code>dataset-with-javascript.yml</code
 </div>
 </div>
 <div class="sect2">
-<h3 id="groovy_scriptable_dataset"><a class="anchor" href="#groovy_scriptable_dataset"></a>5.2. Groovy scriptable dataset</h3>
+<h3 id="groovy_scriptable_dataset"><a class="anchor" href="#groovy_scriptable_dataset"></a>6.2. Groovy scriptable dataset</h3>
 <div class="paragraph">
 <p>Javascript comes by default in JDK but you can use other script languages like <code>Groovy</code>, to do so you need to add it to test classpath:</p>
 </div>
@@ -1286,7 +1291,7 @@ If we declare <code>User</code> table in <code>dataset-with-javascript.yml</code
 </div>
 </div>
 <div class="sect1">
-<h2 id="multiple_databases"><a class="anchor" href="#multiple_databases"></a>6. Multiple databases</h2>
+<h2 id="multiple_databases"><a class="anchor" href="#multiple_databases"></a>7. Multiple databases</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Multiple databases can be tested by using multiple DBUnit rule and Entity manager providers:</p>
@@ -1475,7 +1480,7 @@ If we declare <code>User</code> table in <code>dataset-with-javascript.yml</code
 </div>
 </div>
 <div class="sect1">
-<h2 id="ruling_database_in_cdi_tests"><a class="anchor" href="#ruling_database_in_cdi_tests"></a>7. Ruling database in CDI tests</h2>
+<h2 id="ruling_database_in_cdi_tests"><a class="anchor" href="#ruling_database_in_cdi_tests"></a>8. Ruling database in CDI tests</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>For CDI based tests we are going to use <a href="https://deltaspike.apache.org/documentation/test-control.html" target="_blank">DeltaSpike test control module</a> and <a href="https://github.com/rmpestano/dbunit-rules/tree/master/cdi" target="_blank">DBUnit rules CDI</a>.</p>
@@ -1484,7 +1489,7 @@ If we declare <code>User</code> table in <code>dataset-with-javascript.yml</code
 <p>The first enables CDI in JUnit tests and the second enables DBUnit though a CDI interceptor.</p>
 </div>
 <div class="sect2">
-<h3 id="classpath_dependencies"><a class="anchor" href="#classpath_dependencies"></a>7.1. Classpath dependencies</h3>
+<h3 id="classpath_dependencies"><a class="anchor" href="#classpath_dependencies"></a>8.1. Classpath dependencies</h3>
 <div class="paragraph">
 <p>First we need DBUnit CDI:
 .pom.xml</p>
@@ -1562,7 +1567,7 @@ If we declare <code>User</code> table in <code>dataset-with-javascript.yml</code
 </div>
 </div>
 <div class="sect2">
-<h3 id="configuration"><a class="anchor" href="#configuration"></a>7.2. Configuration</h3>
+<h3 id="configuration"><a class="anchor" href="#configuration"></a>8.2. Configuration</h3>
 <div class="paragraph">
 <p>For configuration we will need a beans.xml which enables DBUnit CDI interceptor:</p>
 </div>
@@ -1655,7 +1660,7 @@ If we declare <code>User</code> table in <code>dataset-with-javascript.yml</code
 </div>
 </div>
 <div class="sect2">
-<h3 id="example_2"><a class="anchor" href="#example_2"></a>7.3. Example</h3>
+<h3 id="example_2"><a class="anchor" href="#example_2"></a>8.3. Example</h3>
 <div class="paragraph">
 <p>Here is a test example:</p>
 </div>
@@ -1790,13 +1795,13 @@ Since version <em>0.9.0</em> (To be released at the time of writing) transaction
 </div>
 </div>
 <div class="sect1">
-<h2 id="ruling_database_in_bdd_tests"><a class="anchor" href="#ruling_database_in_bdd_tests"></a>8. Ruling database in BDD tests</h2>
+<h2 id="ruling_database_in_bdd_tests"><a class="anchor" href="#ruling_database_in_bdd_tests"></a>9. Ruling database in BDD tests</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>BDD and DBUnit are integrated by <a href="https://github.com/rmpestano/dbunit-rules#cucumber-module" target="_blank">DBUnit Rules Cucumber</a>. It&#8217;s a <a href="https://cucumber.io/" target="_blank">Cucumber</a> runner which is CDI aware.</p>
 </div>
 <div class="sect2">
-<h3 id="configuration_2"><a class="anchor" href="#configuration_2"></a>8.1. Configuration</h3>
+<h3 id="configuration_2"><a class="anchor" href="#configuration_2"></a>9.1. Configuration</h3>
 <div class="paragraph">
 <p>Just add following dependency to your classpath:</p>
 </div>
@@ -1816,7 +1821,7 @@ Since version <em>0.9.0</em> (To be released at the time of writing) transaction
 </div>
 </div>
 <div class="sect2">
-<h3 id="example_3"><a class="anchor" href="#example_3"></a>8.2. Example</h3>
+<h3 id="example_3"><a class="anchor" href="#example_3"></a>9.2. Example</h3>
 <div class="paragraph">
 <p>First we need a feature file:</p>
 </div>
@@ -2053,7 +2058,7 @@ Living documentation of <em>DBUnit Rules</em> is based on its <a href="https://g
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-06-22 15:04:45 UTC
+Last updated 2016-06-23 12:59:55 UTC
 </div>
 </div>
 </body>
