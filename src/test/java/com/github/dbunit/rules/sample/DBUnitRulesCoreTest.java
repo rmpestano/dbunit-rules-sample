@@ -51,7 +51,7 @@ public class DBUnitRulesCoreTest {
 
     //tag::transaction[]
     @Test
-    @DataSet("users.yml")
+    @DataSet(value="users.yml", disableConstraints=true)
     public void shouldUpdateUser() {
         User user = (User) em().
                 createQuery("select u from User u  where u.id = 1").
