@@ -636,7 +636,7 @@ table.CodeRay td.code>pre{padding:0}
                 <span class="tag">&lt;property</span> <span class="attribute-name">name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">javax.persistence.jdbc.url</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">value</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">jdbc:hsqldb:mem:test;DB_CLOSE_DELAY=-1</span><span class="delimiter">&quot;</span></span> <span class="tag">/&gt;</span>
                 <span class="tag">&lt;property</span> <span class="attribute-name">name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">javax.persistence.jdbc.user</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">value</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">sa</span><span class="delimiter">&quot;</span></span> <span class="tag">/&gt;</span>
                 <span class="tag">&lt;property</span> <span class="attribute-name">name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">javax.persistence.jdbc.password</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">value</span>=<span class="string"><span class="delimiter">&quot;</span><span class="delimiter">&quot;</span></span> <span class="tag">/&gt;</span>
-                <span class="tag">&lt;property</span> <span class="attribute-name">name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">hibernate.hbm2ddl.auto</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">value</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">create-drop</span><span class="delimiter">&quot;</span></span> <span class="tag">/&gt;</span>
+                <span class="tag">&lt;property</span> <span class="attribute-name">name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">hibernate.hbm2ddl.auto</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">value</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">create-drop</span><span class="delimiter">&quot;</span></span> <span class="tag">/&gt;</span> <i class="conum" data-value="1"></i><b>(1)</b>
                 <span class="tag">&lt;property</span> <span class="attribute-name">name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">hibernate.show_sql</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">value</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">true</span><span class="delimiter">&quot;</span></span> <span class="tag">/&gt;</span>
             <span class="tag">&lt;/properties&gt;</span>
 
@@ -644,6 +644,14 @@ table.CodeRay td.code>pre{padding:0}
 
 <span class="tag">&lt;/persistence&gt;</span></code></pre>
 </div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>We&#8217;re creating the database from our JPA entities.</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>and finally the JPA entity which our tests will work on:</p>
@@ -2082,7 +2090,7 @@ Living documentation of <em>DBUnit Rules</em> is based on its <a href="https://g
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-06-23 14:15:39 UTC
+Last updated 2016-06-27 13:19:19 UTC
 </div>
 </div>
 </body>
