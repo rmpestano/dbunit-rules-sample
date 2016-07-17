@@ -74,6 +74,10 @@ public class ToManyAssociationListTest {
                 add(Projections.property("t.content").as("tweets.content")).
                 add(Projections.property("t.likes").as("tweets.likes"));
 
+        /*
+       List<Long> usersIds = criteria.setProjection(Projections.distinct(Projections.id())).
+                setFirstResult(0).setMaxResults(2).
+                list();*/
 
         List<User> users = criteria.setProjection(Projections.distinct(projectionList)).
                  //hibernate's alisToBean throws PropertyNotFoundException: Could not find setter for tweets.id on class com.github.dbunit.rules.sample.User
