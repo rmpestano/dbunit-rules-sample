@@ -1,38 +1,45 @@
 package com.github.dbunit.rules.sample;
 
-import com.github.dbunit.rules.DBUnitRule;
-import com.github.dbunit.rules.api.dataset.DataSet;
-import com.github.dbunit.rules.util.EntityManagerProvider;
+import static com.github.dbunit.rules.util.EntityManagerProvider.em;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.List;
+
+import javax.inject.Inject;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Path;
+
+import org.apache.deltaspike.core.api.common.DeltaSpike;
+import org.apache.deltaspike.data.impl.criteria.selection.AttributeQuerySelection;
+import org.apache.deltaspike.testcontrol.api.junit.CdiTestRunner;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.annotations.Where;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.JoinType;
-import org.hibernate.transform.AliasToBeanResultTransformer;
-import org.junit.Rule;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
-import java.util.List;
-
-import static com.github.dbunit.rules.util.EntityManagerProvider.em;
-import static org.assertj.core.api.Assertions.assertThat;
+import com.github.dbunit.rules.api.dataset.DataSet;
+import com.github.dbunit.rules.cdi.api.UsingDataSet;
 
 /**
  * Created by pestano on 16/07/16.
  */
+@RunWith(CdiTestRunner.class)
 public class ToManyAssociationListTest {
-
-    @Rule
-    public EntityManagerProvider emProvider = EntityManagerProvider.instance("rulesDB");
-
-    @Rule
-    public DBUnitRule dbUnitRule = DBUnitRule.instance(emProvider.connection());
-
+    
+    
+     @Inject
+     UserRepository userRepository;
+    
 
     @Test
-    @DataSet("userTweets.yml")
+    @UsingDataSet("userTweets.yml")
     public void shouldListUsersAndTweetsWithJPQL() {
 
         long count = (Long) em().createQuery("select count (distinct u.id) from User u " +
@@ -48,12 +55,14 @@ public class ToManyAssociationListTest {
         assertThat(users.get(0)).hasFieldOrPropertyWithValue("name","@dbunit");
         assertThat(users.get(1)).hasFieldOrPropertyWithValue("name","@dbunit2");
         assertThat(users.get(0).getTweets()).isNotNull().hasSize(2);
+        assertThat(users.get(0).getTweets().get(0).getDate()).isNull();//not part of select
         assertThat(users.get(1).getTweets()).isNotNull().hasSize(2);
 
     }
 
     @Test
     @DataSet("userTweets.yml")
+    @Ignore("Hibernate criteria is not recommended, see: https://twitter.com/realpestano/status/754720913933950976")
     public void shouldListUsersAndTweetsWithHibernateCriteria() {
 
         Session session = em().unwrap(Session.class);
@@ -90,9 +99,32 @@ public class ToManyAssociationListTest {
         //fails cause resultTransformer resolves entity values in-memory ater the page has been returned from db
         assertThat(users.get(1)).hasFieldOrPropertyWithValue("name","@dbunit2");
         assertThat(users.get(0).getTweets()).isNotNull().hasSize(2);
+        assertThat(users.get(0).getTweets().get(0).getDate()).isNull();//not part of select
         assertThat(users.get(1).getTweets()).isNotNull().hasSize(2);
 
     }
+    
+    @Test
+    @UsingDataSet("userTweets.yml")
+    public void shouldListUsersAndTweetsWithDesltaSpikeCriteria() {
+        //the query below should be in user repository, is here for comparison purposes
+        List<User> users = userRepository.criteria().
+        //select(User.class,userRepository.attribute(User_.id), userRepository.attribute(User_.name)).
+        join(User_.tweets, 
+                userRepository.where(Tweet.class,javax.persistence.criteria.JoinType.LEFT).
+                likeIgnoreCase(Tweet_.content, "%tweet%")).
+        distinct().
+        createQuery().setFirstResult(0).setMaxResults(2).
+        getResultList();
+        assertThat(users).isNotNull().hasSize(2);
+        assertThat(users.get(0)).hasFieldOrPropertyWithValue("name","@dbunit");
+        assertThat(users.get(1)).hasFieldOrPropertyWithValue("name","@dbunit2");
+        assertThat(users.get(0).getTweets()).isNotNull().hasSize(2);
+        assertThat(users.get(0).getTweets().get(0).getDate()).isNull();//not part of select
+        assertThat(users.get(1).getTweets()).isNotNull().hasSize(2);
+    }
 
+    
+    
 
 }

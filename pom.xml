@@ -1,227 +1,269 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>com.github.dbunit-rules</groupId>
-    <artifactId>dbunit-rules-sample</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.github.dbunit-rules</groupId>
+	<artifactId>dbunit-rules-sample</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
 
-    <properties>
-        <ds.version>1.6.1</ds.version>
-    </properties>
+	<properties>
+		<ds.version>1.6.1</ds.version>
+	</properties>
 
-    <dependencies>
-        <dependency>
-            <groupId>javax</groupId>
-            <artifactId>javaee-api</artifactId>
-            <version>7.0</version>
-            <scope>provided</scope>
-        </dependency>
+	<dependencies>
+		<dependency>
+			<groupId>javax</groupId>
+			<artifactId>javaee-api</artifactId>
+			<version>7.0</version>
+			<scope>provided</scope>
+		</dependency>
 
-        <!-- test dependencies-->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.12</version>
-        </dependency>
-        <dependency>
-            <groupId>org.assertj</groupId>
-            <artifactId>assertj-core</artifactId>
-            <version>2.4.1</version>
-            <scope>test</scope>
-        </dependency>
-        <!-- tag::hsqldb[]-->
-        <dependency>
-            <groupId>org.hsqldb</groupId>
-            <artifactId>hsqldb</artifactId>
-            <version>2.3.4</version>
-            <scope>test</scope>
-        </dependency>
-        <!-- end::hsqldb[]-->
+		<!-- test dependencies -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+		</dependency>
+		<dependency>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core</artifactId>
+			<version>2.4.1</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- tag::hsqldb[] -->
+		<dependency>
+			<groupId>org.hsqldb</groupId>
+			<artifactId>hsqldb</artifactId>
+			<version>2.3.4</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- end::hsqldb[] -->
 
-        <!-- tag::hibernate[]-->
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-core</artifactId>
-            <version>4.2.20.Final</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-entitymanager</artifactId>
-            <version>4.2.20.Final</version>
-            <scope>test</scope>
-        </dependency>
-        <!-- end::hibernate[]-->
+		<!-- tag::hibernate[] -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>4.2.20.Final</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>4.2.20.Final</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- end::hibernate[] -->
 
-        <!-- tag::dbunit-rules[]-->
-        <dependency>
-            <groupId>com.github.dbunit-rules</groupId>
-            <artifactId>core</artifactId>
-            <version>0.8.0</version>
-            <scope>test</scope>
-        </dependency>
-        <!-- end::dbunit-rules[]-->
+		<!-- tag::dbunit-rules[] -->
+		<dependency>
+			<groupId>com.github.dbunit-rules</groupId>
+			<artifactId>core</artifactId>
+			<version>0.8.0</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- end::dbunit-rules[] -->
 
-        <!-- tag::groovy-all[]-->
-        <dependency>
-            <groupId>org.codehaus.groovy</groupId>
-            <artifactId>groovy-all</artifactId>
-            <version>2.4.6</version>
-            <scope>test</scope>
-        </dependency>
-        <!-- end::groovy-all[]-->
+		<!-- tag::groovy-all[] -->
+		<dependency>
+			<groupId>org.codehaus.groovy</groupId>
+			<artifactId>groovy-all</artifactId>
+			<version>2.4.6</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- end::groovy-all[] -->
 
-        <!-- CDI tests -->
+		<!-- CDI tests -->
 
-        <!-- tag::dbunit-cdi[]-->
-        <dependency>
-            <groupId>com.github.dbunit-rules</groupId>
-            <artifactId>cdi</artifactId>
-            <version>0.8.0</version>
-            <scope>test</scope>
-        </dependency>
-        <!-- end::dbunit-cdi[]-->
+		<!-- tag::dbunit-cdi[] -->
+		<dependency>
+			<groupId>com.github.dbunit-rules</groupId>
+			<artifactId>cdi</artifactId>
+			<version>0.8.0</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- end::dbunit-cdi[] -->
 
-        <!-- tag::dbunit-cucumber[]-->
-        <dependency>
-            <groupId>com.github.dbunit-rules</groupId>
-            <artifactId>cucumber</artifactId>
-            <version>0.8.0</version>
-            <scope>test</scope>
-        </dependency>
-        <!-- end::dbunit-cucumber[]-->
+		<!-- tag::dbunit-cucumber[] -->
+		<dependency>
+			<groupId>com.github.dbunit-rules</groupId>
+			<artifactId>cucumber</artifactId>
+			<version>0.8.0</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- end::dbunit-cucumber[] -->
 
-        <!-- tag::test-control[]-->
+		<!-- tag::test-control[] -->
 
-        <dependency> <!--1-->
-            <groupId>org.apache.deltaspike.core</groupId>
-            <artifactId>deltaspike-core-impl</artifactId>
-            <version>${ds.version}</version>
-            <scope>test</scope>
-        </dependency>
+		<dependency> <!--1 -->
+			<groupId>org.apache.deltaspike.core</groupId>
+			<artifactId>deltaspike-core-impl</artifactId>
+			<version>${ds.version}</version>
+			<scope>test</scope>
+		</dependency>
 
-        <dependency> <!--2-->
-            <groupId>org.apache.deltaspike.modules</groupId>
-            <artifactId>deltaspike-test-control-module-api</artifactId>
-            <version>${ds.version}</version>
-            <scope>test</scope>
-        </dependency>
+		<dependency>
+			<groupId>org.apache.deltaspike.modules</groupId>
+			<artifactId>deltaspike-data-module-impl</artifactId>
+			<version>${ds.version}</version>
+			<scope>test</scope>
+		</dependency>
 
-        <dependency> <!--2-->
-            <groupId>org.apache.deltaspike.modules</groupId>
-            <artifactId>deltaspike-test-control-module-impl</artifactId>
-            <version>${ds.version}</version>
-            <scope>test</scope>
-        </dependency>
+		<dependency>
+			<groupId>org.apache.deltaspike.modules</groupId>
+			<artifactId>deltaspike-data-module-api</artifactId>
+			<version>${ds.version}</version>
+			<scope>test</scope>
+		</dependency>
 
-        <dependency> <!--3-->
-            <groupId>org.apache.deltaspike.cdictrl</groupId>
-            <artifactId>deltaspike-cdictrl-owb</artifactId>
-            <version>${ds.version}</version>
-            <scope>test</scope>
-        </dependency>
+		<dependency> <!--2 -->
+			<groupId>org.apache.deltaspike.modules</groupId>
+			<artifactId>deltaspike-test-control-module-api</artifactId>
+			<version>${ds.version}</version>
+			<scope>test</scope>
+		</dependency>
 
-        <dependency> <!--4-->
-            <groupId>org.apache.openwebbeans</groupId>
-            <artifactId>openwebbeans-impl</artifactId>
-            <version>1.6.2</version>
-            <scope>test</scope>
-        </dependency>
-        <!-- end::test-control[]-->
-    </dependencies>
+		<dependency> <!--2 -->
+			<groupId>org.apache.deltaspike.modules</groupId>
+			<artifactId>deltaspike-test-control-module-impl</artifactId>
+			<version>${ds.version}</version>
+			<scope>test</scope>
+		</dependency>
 
-    <profiles>
-        <profile>
-            <id>docs</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.asciidoctor</groupId>
-                        <artifactId>asciidoctor-maven-plugin</artifactId>
-                        <version>1.5.3</version>
-                        <configuration>
-                            <sourceDirectory>src/main/docs</sourceDirectory>
-                            <sourceDocumentName>dbunit-rules.adoc</sourceDocumentName>
-                            <outputDirectory>${project.build.directory}/docs</outputDirectory>
-                            <headerFooter>true</headerFooter>
-                            <doctype>book</doctype>
-                            <attributes>
-                                <sourcedir>${project.build.sourceDirectory}/com/github/dbunit/rules/sample</sourcedir>
-                                <testdir>${project.build.testSourceDirectory}/com/github/dbunit/rules/sample</testdir>
-                                <datasetdir>${project.build.testSourceDirectory}/../resources/datasets</datasetdir>
-                                <featuresdir>${project.build.testSourceDirectory}/../resources/features</featuresdir>
-                                <metainf>${project.build.testSourceDirectory}/../resources/META-INF</metainf>
-                                <basedir>${project.build.directory}/../</basedir>
-                                <imagesdir>./images</imagesdir>
-                                <docVersion>${project.version}</docVersion>
-                            </attributes>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <id>output-html5</id>
-                                <phase>generate-resources</phase>
-                                <goals>
-                                    <goal>process-asciidoc</goal>
-                                </goals>
-                                <configuration>
-                                    <sourceHighlighter>coderay</sourceHighlighter>
-                                    <backend>html5</backend>
-                                    <attributes>
-                                        <linkcss>false</linkcss>
-                                        <linkattrs>true</linkattrs>
-                                        <sectnums/>
-                                        <toc>center</toc>
-                                        <icons>font</icons>
-                                        <idprefix/>
-                                        <sectanchors>true</sectanchors>
-                                    </attributes>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>output-pdf</id>
-                                <phase>generate-resources</phase>
-                                <goals>
-                                    <goal>process-asciidoc</goal>
-                                </goals>
-                                <configuration>
-                                    <backend>pdf</backend>
-                                    <sourceHighlighter>coderay</sourceHighlighter>
-                                    <attributes>
-                                        <pagenums/>
-                                        <toc/>
-                                        <idprefix/>
-                                        <idseparator>-</idseparator>
-                                    </attributes>
-                                </configuration>
-                            </execution>
-                        </executions>
-                        <dependencies>
-                            <dependency>
-                                <groupId>org.asciidoctor</groupId>
-                                <artifactId>asciidoctorj-pdf</artifactId>
-                                <version>1.5.0-alpha.11</version>
-                            </dependency>
-                        </dependencies>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-scm-publish-plugin</artifactId>
-                        <version>1.1</version>
-                        <configuration>
-                            <checkoutDirectory>${project.build.outputDirectory}</checkoutDirectory>
-                            <checkinComment>Publishing DBUnit Rules Sample documentation.</checkinComment>
-                            <content>target/docs</content>
-                            <skipDeletedFiles>true</skipDeletedFiles>
-                            <pubScmUrl>scm:git:https://${USER}:${PASS}@github.com/rmpestano/dbunit-rules-sample.git
-                            </pubScmUrl>
-                            <scmBranch>gh-pages</scmBranch>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
+		<dependency> <!--3 -->
+			<groupId>org.apache.deltaspike.cdictrl</groupId>
+			<artifactId>deltaspike-cdictrl-owb</artifactId>
+			<version>${ds.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency> <!--4 -->
+			<groupId>org.apache.openwebbeans</groupId>
+			<artifactId>openwebbeans-impl</artifactId>
+			<version>1.6.2</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- end::test-control[] -->
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>com.mysema.maven</groupId>
+				<artifactId>apt-maven-plugin</artifactId>
+				<version>1.1.3</version>
+				<executions>
+					<execution>
+						<id>metamodel</id>
+						<goals>
+							<goal>process</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>target/generated-sources/metamodel</outputDirectory>
+							<processor>org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor</processor>
+						</configuration>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>org.hibernate</groupId>
+						<artifactId>hibernate-jpamodelgen</artifactId>
+						<version>4.3.8.Final</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+		</plugins>
+	</build>
+
+	<profiles>
+		<profile>
+			<id>docs</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.asciidoctor</groupId>
+						<artifactId>asciidoctor-maven-plugin</artifactId>
+						<version>1.5.3</version>
+						<configuration>
+							<sourceDirectory>src/main/docs</sourceDirectory>
+							<sourceDocumentName>dbunit-rules.adoc</sourceDocumentName>
+							<outputDirectory>${project.build.directory}/docs</outputDirectory>
+							<headerFooter>true</headerFooter>
+							<doctype>book</doctype>
+							<attributes>
+								<sourcedir>${project.build.sourceDirectory}/com/github/dbunit/rules/sample</sourcedir>
+								<testdir>${project.build.testSourceDirectory}/com/github/dbunit/rules/sample</testdir>
+								<datasetdir>${project.build.testSourceDirectory}/../resources/datasets</datasetdir>
+								<featuresdir>${project.build.testSourceDirectory}/../resources/features</featuresdir>
+								<metainf>${project.build.testSourceDirectory}/../resources/META-INF</metainf>
+								<basedir>${project.build.directory}/../</basedir>
+								<imagesdir>./images</imagesdir>
+								<docVersion>${project.version}</docVersion>
+							</attributes>
+						</configuration>
+						<executions>
+							<execution>
+								<id>output-html5</id>
+								<phase>generate-resources</phase>
+								<goals>
+									<goal>process-asciidoc</goal>
+								</goals>
+								<configuration>
+									<sourceHighlighter>coderay</sourceHighlighter>
+									<backend>html5</backend>
+									<attributes>
+										<linkcss>false</linkcss>
+										<linkattrs>true</linkattrs>
+										<sectnums />
+										<toc>center</toc>
+										<icons>font</icons>
+										<idprefix />
+										<sectanchors>true</sectanchors>
+									</attributes>
+								</configuration>
+							</execution>
+							<execution>
+								<id>output-pdf</id>
+								<phase>generate-resources</phase>
+								<goals>
+									<goal>process-asciidoc</goal>
+								</goals>
+								<configuration>
+									<backend>pdf</backend>
+									<sourceHighlighter>coderay</sourceHighlighter>
+									<attributes>
+										<pagenums />
+										<toc />
+										<idprefix />
+										<idseparator>-</idseparator>
+									</attributes>
+								</configuration>
+							</execution>
+						</executions>
+						<dependencies>
+							<dependency>
+								<groupId>org.asciidoctor</groupId>
+								<artifactId>asciidoctorj-pdf</artifactId>
+								<version>1.5.0-alpha.11</version>
+							</dependency>
+						</dependencies>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-scm-publish-plugin</artifactId>
+						<version>1.1</version>
+						<configuration>
+							<checkoutDirectory>${project.build.outputDirectory}</checkoutDirectory>
+							<checkinComment>Publishing DBUnit Rules Sample documentation.</checkinComment>
+							<content>target/docs</content>
+							<skipDeletedFiles>true</skipDeletedFiles>
+							<pubScmUrl>scm:git:https://${USER}:${PASS}@github.com/rmpestano/dbunit-rules-sample.git
+							</pubScmUrl>
+							<scmBranch>gh-pages</scmBranch>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 </project>
