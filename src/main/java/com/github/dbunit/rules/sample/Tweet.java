@@ -14,7 +14,7 @@ public class Tweet {
 
     @Id
     @GeneratedValue
-    private long id;
+    private Long id;
 
     @Size(min = 1, max = 140)
     private String content;
@@ -54,11 +54,11 @@ public class Tweet {
         this.date = date;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -71,18 +71,29 @@ public class Tweet {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Tweet tweet = (Tweet) o;
-
-        return id == tweet.id;
-
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
     }
 
     @Override
-    public int hashCode() {
-        return (int) (id ^ (id >>> 32));
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Tweet other = (Tweet) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        return true;
     }
+
+   
 }

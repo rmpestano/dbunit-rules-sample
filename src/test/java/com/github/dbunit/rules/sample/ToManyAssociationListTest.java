@@ -6,15 +6,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.Path;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Root;
 
-import org.apache.deltaspike.core.api.common.DeltaSpike;
-import org.apache.deltaspike.data.impl.criteria.selection.AttributeQuerySelection;
 import org.apache.deltaspike.testcontrol.api.junit.CdiTestRunner;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.annotations.Where;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
@@ -36,6 +36,9 @@ public class ToManyAssociationListTest {
     
      @Inject
      UserRepository userRepository;
+     
+     @Inject 
+     EntityManager em;
     
 
     @Test
@@ -49,13 +52,16 @@ public class ToManyAssociationListTest {
 
         List<User> users = em().createQuery
                 ("select distinct u from User u " +
-                        "left join fetch u.tweets t where t.content like '%tweet%'").
-                setFirstResult(0).setMaxResults(2).getResultList();
+                        "left join u.tweets t where t.content like '%tweet%' ", User.class).
+            /* not working   ("select distinct new com.github.dbunit.rules.sample.User(u.id, u.name, t.id, t.content, t.likes) from User u " +
+                        "left join u.tweets t where t.content like '%tweet%'", User.class).*/
+                setFirstResult(0).setMaxResults(2).
+                getResultList();
         assertThat(users).isNotNull().hasSize(2);
         assertThat(users.get(0)).hasFieldOrPropertyWithValue("name","@dbunit");
         assertThat(users.get(1)).hasFieldOrPropertyWithValue("name","@dbunit2");
         assertThat(users.get(0).getTweets()).isNotNull().hasSize(2);
-        assertThat(users.get(0).getTweets().get(0).getDate()).isNull();//not part of select
+        //assertThat(users.get(0).getTweets().get(0).getDate()).isNull();//not part of select
         assertThat(users.get(1).getTweets()).isNotNull().hasSize(2);
 
     }
@@ -106,6 +112,28 @@ public class ToManyAssociationListTest {
     
     @Test
     @UsingDataSet("userTweets.yml")
+    public void shouldListUsersAndTweetsWithJPACriteria() {
+        CriteriaBuilder builder = em.getCriteriaBuilder();
+        CriteriaQuery<User> query = builder.createQuery(User.class);
+        Root<User> root = query.from(User.class);
+        Join<User, Tweet> join = root.join(User_.tweets, javax.persistence.criteria.JoinType.LEFT);
+        CriteriaQuery<User> select = query.
+                where(builder.like(builder.lower(join.get(Tweet_.content)), "%tweet%")).
+                distinct(true).
+                select(root);
+        List<User> users = em.createQuery(select).setFirstResult(0).setMaxResults(2).getResultList();
+        
+        assertThat(users).isNotNull().hasSize(2);
+        assertThat(users.get(0)).hasFieldOrPropertyWithValue("name","@dbunit");
+        assertThat(users.get(1)).hasFieldOrPropertyWithValue("name","@dbunit2");
+        assertThat(users.get(0).getTweets()).isNotNull().hasSize(2);
+        //assertThat(users.get(0).getTweets().get(0).getDate()).isNull();//not part of select
+        assertThat(users.get(1).getTweets()).isNotNull().hasSize(2);
+    }
+
+    
+    @Test
+    @UsingDataSet("userTweets.yml")
     public void shouldListUsersAndTweetsWithDesltaSpikeCriteria() {
         //the query below should be in user repository, is here for comparison purposes
         List<User> users = userRepository.criteria().
@@ -120,7 +148,7 @@ public class ToManyAssociationListTest {
         assertThat(users.get(0)).hasFieldOrPropertyWithValue("name","@dbunit");
         assertThat(users.get(1)).hasFieldOrPropertyWithValue("name","@dbunit2");
         assertThat(users.get(0).getTweets()).isNotNull().hasSize(2);
-        assertThat(users.get(0).getTweets().get(0).getDate()).isNull();//not part of select
+        //assertThat(users.get(0).getTweets().get(0).getDate()).isNull();//not part of select
         assertThat(users.get(1).getTweets()).isNotNull().hasSize(2);
     }
 
