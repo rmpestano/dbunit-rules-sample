@@ -47,7 +47,7 @@ public class SearchUsersSteps {
         assertThat(usersFound).
                 isNotNull().
                 hasSize(numberOfUsersFound).
-                contains(new User(1));//examples contains user with id=1
+                contains(new User(1L));//examples contains user with id=1
     }
 
 
