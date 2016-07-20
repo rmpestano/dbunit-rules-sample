@@ -577,12 +577,12 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>        &lt;dependency&gt;
-            &lt;groupId&gt;com.github.dbunit-rules&lt;/groupId&gt;
-            &lt;artifactId&gt;core&lt;/artifactId&gt;
-            &lt;version&gt;0.8.0&lt;/version&gt;
-            &lt;scope&gt;test&lt;/scope&gt;
-        &lt;/dependency&gt;</pre>
+<pre>		&lt;dependency&gt;
+			&lt;groupId&gt;com.github.dbunit-rules&lt;/groupId&gt;
+			&lt;artifactId&gt;core&lt;/artifactId&gt;
+			&lt;version&gt;0.8.0&lt;/version&gt;
+			&lt;scope&gt;test&lt;/scope&gt;
+		&lt;/dependency&gt;</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -590,12 +590,12 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>        &lt;dependency&gt;
-            &lt;groupId&gt;org.hsqldb&lt;/groupId&gt;
-            &lt;artifactId&gt;hsqldb&lt;/artifactId&gt;
-            &lt;version&gt;2.3.4&lt;/version&gt;
-            &lt;scope&gt;test&lt;/scope&gt;
-        &lt;/dependency&gt;</pre>
+<pre>		&lt;dependency&gt;
+			&lt;groupId&gt;org.hsqldb&lt;/groupId&gt;
+			&lt;artifactId&gt;hsqldb&lt;/artifactId&gt;
+			&lt;version&gt;2.3.4&lt;/version&gt;
+			&lt;scope&gt;test&lt;/scope&gt;
+		&lt;/dependency&gt;</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -603,18 +603,18 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>        &lt;dependency&gt;
-            &lt;groupId&gt;org.hibernate&lt;/groupId&gt;
-            &lt;artifactId&gt;hibernate-core&lt;/artifactId&gt;
-            &lt;version&gt;4.2.20.Final&lt;/version&gt;
-            &lt;scope&gt;provided&lt;/scope&gt;
-        &lt;/dependency&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;org.hibernate&lt;/groupId&gt;
-            &lt;artifactId&gt;hibernate-entitymanager&lt;/artifactId&gt;
-            &lt;version&gt;4.2.20.Final&lt;/version&gt;
-            &lt;scope&gt;test&lt;/scope&gt;
-        &lt;/dependency&gt;</pre>
+<pre>		&lt;dependency&gt;
+			&lt;groupId&gt;org.hibernate&lt;/groupId&gt;
+			&lt;artifactId&gt;hibernate-core&lt;/artifactId&gt;
+			&lt;version&gt;4.2.20.Final&lt;/version&gt;
+			&lt;scope&gt;provided&lt;/scope&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.hibernate&lt;/groupId&gt;
+			&lt;artifactId&gt;hibernate-entitymanager&lt;/artifactId&gt;
+			&lt;version&gt;4.2.20.Final&lt;/version&gt;
+			&lt;scope&gt;test&lt;/scope&gt;
+		&lt;/dependency&gt;</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -867,7 +867,7 @@ There is a lot of <a href="https://github.com/rmpestano/dbunit-rules/tree/master
 32
 </pre></td>
   <td class="code"><pre>    <span class="annotation">@Test</span>
-    <span class="annotation">@DataSet</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">users.yml</span><span class="delimiter">&quot;</span></span>)
+    <span class="annotation">@DataSet</span>(value=<span class="string"><span class="delimiter">&quot;</span><span class="content">users.yml</span><span class="delimiter">&quot;</span></span>, disableConstraints=<span class="predefined-constant">true</span>)
     <span class="directive">public</span> <span class="type">void</span> shouldUpdateUser() {
         User user = (User) em().
                 createQuery(<span class="string"><span class="delimiter">&quot;</span><span class="content">select u from User u  where u.id = 1</span><span class="delimiter">&quot;</span></span>).
@@ -1124,7 +1124,7 @@ When you use a dataset like users.yml in @DataSet dbunit will use <code>CLEAN_IN
 
     <span class="annotation">@Id</span>
     <span class="annotation">@GeneratedValue</span>
-    <span class="directive">private</span> <span class="type">long</span> id;
+    <span class="directive">private</span> <span class="predefined-type">Long</span> id;
 
     <span class="annotation">@Size</span>(min = <span class="integer">1</span>, max = <span class="integer">140</span>)
     <span class="directive">private</span> <span class="predefined-type">String</span> content;
@@ -1238,12 +1238,12 @@ If we declare <code>User</code> table in <code>dataset-with-javascript.yml</code
 <div class="listingblock">
 <div class="title">pom.xml</div>
 <div class="content">
-<pre>        &lt;dependency&gt;
-            &lt;groupId&gt;org.codehaus.groovy&lt;/groupId&gt;
-            &lt;artifactId&gt;groovy-all&lt;/artifactId&gt;
-            &lt;version&gt;2.4.6&lt;/version&gt;
-            &lt;scope&gt;test&lt;/scope&gt;
-        &lt;/dependency&gt;</pre>
+<pre>		&lt;dependency&gt;
+			&lt;groupId&gt;org.codehaus.groovy&lt;/groupId&gt;
+			&lt;artifactId&gt;groovy-all&lt;/artifactId&gt;
+			&lt;version&gt;2.4.6&lt;/version&gt;
+			&lt;scope&gt;test&lt;/scope&gt;
+		&lt;/dependency&gt;</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1516,12 +1516,12 @@ If we declare <code>User</code> table in <code>dataset-with-javascript.yml</code
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>        &lt;dependency&gt;
-            &lt;groupId&gt;com.github.dbunit-rules&lt;/groupId&gt;
-            &lt;artifactId&gt;cdi&lt;/artifactId&gt;
-            &lt;version&gt;0.8.0&lt;/version&gt;
-            &lt;scope&gt;test&lt;/scope&gt;
-        &lt;/dependency&gt;</pre>
+<pre>		&lt;dependency&gt;
+			&lt;groupId&gt;com.github.dbunit-rules&lt;/groupId&gt;
+			&lt;artifactId&gt;cdi&lt;/artifactId&gt;
+			&lt;version&gt;0.8.0&lt;/version&gt;
+			&lt;scope&gt;test&lt;/scope&gt;
+		&lt;/dependency&gt;</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1529,40 +1529,51 @@ If we declare <code>User</code> table in <code>dataset-with-javascript.yml</code
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>        &lt;dependency&gt; <i class="conum" data-value="1"></i><b>(1)</b>
-            &lt;groupId&gt;org.apache.deltaspike.core&lt;/groupId&gt;
-            &lt;artifactId&gt;deltaspike-core-impl&lt;/artifactId&gt;
-            &lt;version&gt;${ds.version}&lt;/version&gt;
-            &lt;scope&gt;test&lt;/scope&gt;
-        &lt;/dependency&gt;
+<pre>		&lt;dependency&gt; &lt;!--1 --&gt;
+			&lt;groupId&gt;org.apache.deltaspike.core&lt;/groupId&gt;
+			&lt;artifactId&gt;deltaspike-core-impl&lt;/artifactId&gt;
+			&lt;version&gt;${ds.version}&lt;/version&gt;
+		&lt;/dependency&gt;
 
-        &lt;dependency&gt; <i class="conum" data-value="2"></i><b>(2)</b>
-            &lt;groupId&gt;org.apache.deltaspike.modules&lt;/groupId&gt;
-            &lt;artifactId&gt;deltaspike-test-control-module-api&lt;/artifactId&gt;
-            &lt;version&gt;${ds.version}&lt;/version&gt;
-            &lt;scope&gt;test&lt;/scope&gt;
-        &lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.apache.deltaspike.modules&lt;/groupId&gt;
+			&lt;artifactId&gt;deltaspike-data-module-impl&lt;/artifactId&gt;
+			&lt;version&gt;${ds.version}&lt;/version&gt;
+		&lt;/dependency&gt;
 
-        &lt;dependency&gt; <i class="conum" data-value="2"></i><b>(2)</b>
-            &lt;groupId&gt;org.apache.deltaspike.modules&lt;/groupId&gt;
-            &lt;artifactId&gt;deltaspike-test-control-module-impl&lt;/artifactId&gt;
-            &lt;version&gt;${ds.version}&lt;/version&gt;
-            &lt;scope&gt;test&lt;/scope&gt;
-        &lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.apache.deltaspike.modules&lt;/groupId&gt;
+			&lt;artifactId&gt;deltaspike-data-module-api&lt;/artifactId&gt;
+			&lt;version&gt;${ds.version}&lt;/version&gt;
+		&lt;/dependency&gt;
 
-        &lt;dependency&gt; <i class="conum" data-value="3"></i><b>(3)</b>
-            &lt;groupId&gt;org.apache.deltaspike.cdictrl&lt;/groupId&gt;
-            &lt;artifactId&gt;deltaspike-cdictrl-owb&lt;/artifactId&gt;
-            &lt;version&gt;${ds.version}&lt;/version&gt;
-            &lt;scope&gt;test&lt;/scope&gt;
-        &lt;/dependency&gt;
+		&lt;dependency&gt; &lt;!--2 --&gt;
+			&lt;groupId&gt;org.apache.deltaspike.modules&lt;/groupId&gt;
+			&lt;artifactId&gt;deltaspike-test-control-module-api&lt;/artifactId&gt;
+			&lt;version&gt;${ds.version}&lt;/version&gt;
+			&lt;scope&gt;test&lt;/scope&gt;
+		&lt;/dependency&gt;
 
-        &lt;dependency&gt; <i class="conum" data-value="4"></i><b>(4)</b>
-            &lt;groupId&gt;org.apache.openwebbeans&lt;/groupId&gt;
-            &lt;artifactId&gt;openwebbeans-impl&lt;/artifactId&gt;
-            &lt;version&gt;1.6.2&lt;/version&gt;
-            &lt;scope&gt;test&lt;/scope&gt;
-        &lt;/dependency&gt;</pre>
+		&lt;dependency&gt; &lt;!--2 --&gt;
+			&lt;groupId&gt;org.apache.deltaspike.modules&lt;/groupId&gt;
+			&lt;artifactId&gt;deltaspike-test-control-module-impl&lt;/artifactId&gt;
+			&lt;version&gt;${ds.version}&lt;/version&gt;
+			&lt;scope&gt;test&lt;/scope&gt;
+		&lt;/dependency&gt;
+
+		&lt;dependency&gt; &lt;!--3 --&gt;
+			&lt;groupId&gt;org.apache.deltaspike.cdictrl&lt;/groupId&gt;
+			&lt;artifactId&gt;deltaspike-cdictrl-owb&lt;/artifactId&gt;
+			&lt;version&gt;${ds.version}&lt;/version&gt;
+			&lt;scope&gt;test&lt;/scope&gt;
+		&lt;/dependency&gt;
+
+		&lt;dependency&gt; &lt;!--4 --&gt;
+			&lt;groupId&gt;org.apache.openwebbeans&lt;/groupId&gt;
+			&lt;artifactId&gt;openwebbeans-impl&lt;/artifactId&gt;
+			&lt;version&gt;1.6.2&lt;/version&gt;
+			&lt;scope&gt;test&lt;/scope&gt;
+		&lt;/dependency&gt;</pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -1840,12 +1851,12 @@ Since version <em>0.9.0</em> (To be released at the time of writing) transaction
 <div class="listingblock">
 <div class="title">pom.xml</div>
 <div class="content">
-<pre>        &lt;dependency&gt;
-            &lt;groupId&gt;com.github.dbunit-rules&lt;/groupId&gt;
-            &lt;artifactId&gt;cucumber&lt;/artifactId&gt;
-            &lt;version&gt;0.8.0&lt;/version&gt;
-            &lt;scope&gt;test&lt;/scope&gt;
-        &lt;/dependency&gt;</pre>
+<pre>		&lt;dependency&gt;
+			&lt;groupId&gt;com.github.dbunit-rules&lt;/groupId&gt;
+			&lt;artifactId&gt;cucumber&lt;/artifactId&gt;
+			&lt;version&gt;0.8.0&lt;/version&gt;
+			&lt;scope&gt;test&lt;/scope&gt;
+		&lt;/dependency&gt;</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -2058,7 +2069,7 @@ Examples:
         assertThat(usersFound).
                 isNotNull().
                 hasSize(numberOfUsersFound).
-                contains(<span class="keyword">new</span> User(<span class="integer">1</span>));<span class="comment">//examples contains user with id=1</span>
+                contains(<span class="keyword">new</span> User(<span class="integer">1L</span>));<span class="comment">//examples contains user with id=1</span>
     }
 
 
@@ -2090,7 +2101,7 @@ Living documentation of <em>DBUnit Rules</em> is based on its <a href="https://g
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-07-17 18:13:53 UTC
+Last updated 2016-07-20 00:27:39 UTC
 </div>
 </div>
 </body>
