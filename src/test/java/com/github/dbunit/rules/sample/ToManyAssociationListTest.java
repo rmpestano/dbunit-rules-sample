@@ -24,7 +24,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.github.dbunit.rules.api.dataset.DataSet;
 import com.github.dbunit.rules.cdi.api.UsingDataSet;
 
 /**
@@ -61,14 +60,13 @@ public class ToManyAssociationListTest {
         assertThat(users.get(0)).hasFieldOrPropertyWithValue("name","@dbunit");
         assertThat(users.get(1)).hasFieldOrPropertyWithValue("name","@dbunit2");
         assertThat(users.get(0).getTweets()).isNotNull().hasSize(2);
-        //assertThat(users.get(0).getTweets().get(0).getDate()).isNull();//not part of select
         assertThat(users.get(1).getTweets()).isNotNull().hasSize(2);
 
     }
 
     @Test
-    @DataSet("userTweets.yml")
-    @Ignore("Hibernate criteria is not recommended, see: https://twitter.com/realpestano/status/754720913933950976")
+    @UsingDataSet("userTweets.yml")
+    @Ignore("Hibernate criteria is not working for this case and is not recommended anymore, see: https://twitter.com/realpestano/status/754720913933950976")
     public void shouldListUsersAndTweetsWithHibernateCriteria() {
 
         Session session = em().unwrap(Session.class);
@@ -121,13 +119,13 @@ public class ToManyAssociationListTest {
                 where(builder.like(builder.lower(join.get(Tweet_.content)), "%tweet%")).
                 distinct(true).
                 select(root);
+               //multiselect(root.get(User_.id),root.get(User_.name), join.get(Tweet_.id), join.get(Tweet_.content), join.get(Tweet_.likes));
         List<User> users = em.createQuery(select).setFirstResult(0).setMaxResults(2).getResultList();
         
         assertThat(users).isNotNull().hasSize(2);
         assertThat(users.get(0)).hasFieldOrPropertyWithValue("name","@dbunit");
         assertThat(users.get(1)).hasFieldOrPropertyWithValue("name","@dbunit2");
         assertThat(users.get(0).getTweets()).isNotNull().hasSize(2);
-        //assertThat(users.get(0).getTweets().get(0).getDate()).isNull();//not part of select
         assertThat(users.get(1).getTweets()).isNotNull().hasSize(2);
     }
 
@@ -141,14 +139,13 @@ public class ToManyAssociationListTest {
         join(User_.tweets, 
                 userRepository.where(Tweet.class,javax.persistence.criteria.JoinType.LEFT).
                 likeIgnoreCase(Tweet_.content, "%tweet%")).
-        distinct().
-        createQuery().setFirstResult(0).setMaxResults(2).
+        distinct().createQuery().
+        setFirstResult(0).setMaxResults(2).
         getResultList();
         assertThat(users).isNotNull().hasSize(2);
         assertThat(users.get(0)).hasFieldOrPropertyWithValue("name","@dbunit");
         assertThat(users.get(1)).hasFieldOrPropertyWithValue("name","@dbunit2");
         assertThat(users.get(0).getTweets()).isNotNull().hasSize(2);
-        //assertThat(users.get(0).getTweets().get(0).getDate()).isNull();//not part of select
         assertThat(users.get(1).getTweets()).isNotNull().hasSize(2);
     }
 
