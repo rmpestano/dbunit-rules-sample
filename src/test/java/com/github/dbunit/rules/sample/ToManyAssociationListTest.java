@@ -66,50 +66,7 @@ public class ToManyAssociationListTest {
 
     }
 
-    @Test
-    @DataSet("userTweets.yml")
-    @Ignore("Hibernate criteria is not recommended, see: https://twitter.com/realpestano/status/754720913933950976")
-    public void shouldListUsersAndTweetsWithHibernateCriteria() {
 
-        Session session = em().unwrap(Session.class);
-        Criteria criteria = session.createCriteria(User.class);
-
-        long count = (Long)criteria.createAlias("tweets","t", JoinType.LEFT_OUTER_JOIN).
-        add(Restrictions.ilike("t.content", "tweet", MatchMode.ANYWHERE)).
-        setProjection(Projections.countDistinct("id")).
-        uniqueResult();
-
-        assertThat(count).isEqualTo(3);
-
-
-        ProjectionList projectionList = Projections.projectionList().
-                add(Projections.id().as("id")).
-                add(Projections.property("name").as("name")).
-                add(Projections.property("t.id").as("tweets.id")).
-                add(Projections.property("t.content").as("tweets.content")).
-                add(Projections.property("t.likes").as("tweets.likes"));
-
-        /*
-       List<Long> usersIds = criteria.setProjection(Projections.distinct(Projections.id())).
-                setFirstResult(0).setMaxResults(2).
-                list();*/
-
-        List<User> users = criteria.setProjection(Projections.distinct(projectionList)).
-                 //hibernate's alisToBean throws PropertyNotFoundException: Could not find setter for tweets.id on class com.github.dbunit.rules.sample.User
-                 //setResultTransformer(new AliasToBeanResultTransformer(User.class)).
-                setResultTransformer(new AliasToBeanNestedResultTransformer(User.class)).
-                setFirstResult(0).setMaxResults(2).
-                list();
-        assertThat(users).isNotNull().hasSize(2);
-        assertThat(users.get(0)).hasFieldOrPropertyWithValue("name","@dbunit");
-        //fails cause resultTransformer resolves entity values in-memory ater the page has been returned from db
-        assertThat(users.get(1)).hasFieldOrPropertyWithValue("name","@dbunit2");
-        assertThat(users.get(0).getTweets()).isNotNull().hasSize(2);
-        assertThat(users.get(0).getTweets().get(0).getDate()).isNull();//not part of select
-        assertThat(users.get(1).getTweets()).isNotNull().hasSize(2);
-
-    }
-    
     @Test
     @UsingDataSet("userTweets.yml")
     public void shouldListUsersAndTweetsWithJPACriteria() {
@@ -121,6 +78,7 @@ public class ToManyAssociationListTest {
                 where(builder.like(builder.lower(join.get(Tweet_.content)), "%tweet%")).
                 distinct(true).
                 select(root);
+        // not working multiselect(root.get(User_.id), root.get(User_.name),join.get(Tweet_.id), join.get(Tweet_.content), join.get(Tweet_.likes));
         List<User> users = em.createQuery(select).setFirstResult(0).setMaxResults(2).getResultList();
         
         assertThat(users).isNotNull().hasSize(2);
@@ -152,7 +110,49 @@ public class ToManyAssociationListTest {
         assertThat(users.get(1).getTweets()).isNotNull().hasSize(2);
     }
 
-    
+    @Test
+    @DataSet("userTweets.yml")
+    @Ignore("Hibernate criteria is not recommended, see: https://twitter.com/realpestano/status/754720913933950976")
+    public void shouldListUsersAndTweetsWithHibernateCriteria() {
+
+        Session session = em().unwrap(Session.class);
+        Criteria criteria = session.createCriteria(User.class);
+
+        long count = (Long)criteria.createAlias("tweets","t", JoinType.LEFT_OUTER_JOIN).
+                add(Restrictions.ilike("t.content", "tweet", MatchMode.ANYWHERE)).
+                setProjection(Projections.countDistinct("id")).
+                uniqueResult();
+
+        assertThat(count).isEqualTo(3);
+
+
+        ProjectionList projectionList = Projections.projectionList().
+                add(Projections.id().as("id")).
+                add(Projections.property("name").as("name")).
+                add(Projections.property("t.id").as("tweets.id")).
+                add(Projections.property("t.content").as("tweets.content")).
+                add(Projections.property("t.likes").as("tweets.likes"));
+
+        /*
+       List<Long> usersIds = criteria.setProjection(Projections.distinct(Projections.id())).
+                setFirstResult(0).setMaxResults(2).
+                list();*/
+
+        List<User> users = criteria.setProjection(Projections.distinct(projectionList)).
+                //hibernate's alisToBean throws PropertyNotFoundException: Could not find setter for tweets.id on class com.github.dbunit.rules.sample.User
+                        //setResultTransformer(new AliasToBeanResultTransformer(User.class)).
+                        setResultTransformer(new AliasToBeanNestedResultTransformer(User.class)).
+                setFirstResult(0).setMaxResults(2).
+                list();
+        assertThat(users).isNotNull().hasSize(2);
+        assertThat(users.get(0)).hasFieldOrPropertyWithValue("name","@dbunit");
+        //fails cause resultTransformer resolves entity values in-memory ater the page has been returned from db
+        assertThat(users.get(1)).hasFieldOrPropertyWithValue("name","@dbunit2");
+        assertThat(users.get(0).getTweets()).isNotNull().hasSize(2);
+        assertThat(users.get(0).getTweets().get(0).getDate()).isNull();//not part of select
+        assertThat(users.get(1).getTweets()).isNotNull().hasSize(2);
+
+    }
     
 
 }
