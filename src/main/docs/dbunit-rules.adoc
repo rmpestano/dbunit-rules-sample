@@ -76,7 +76,7 @@ And the entity manager persistence.xml:
 
 </persistence>
 ----
-<1> We're creating the database from our JPA entities.  
+<1> We're creating the database from our JPA entities, but we could use a database migration tool like flyway to do this work, see https://github.com/rmpestano/dbunit-rules/blob/master/examples/jOOQ-DBUnit-flyway-example/src/test/java/JooqDBUnitTest.java#L45[example here^].  
 
 and finally the JPA entity which our tests will work on:
 
