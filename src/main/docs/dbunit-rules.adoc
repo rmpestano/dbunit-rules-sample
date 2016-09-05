@@ -415,7 +415,7 @@ NOTE: Living documentation of _DBUnit Rules_ is based on its https://github.com/
 
 == Ruling database in *JUnit 5* tests
 
-http://junit.org/junit5/[JUnit 5^] is the new version of JUnit and comes with a new extension model, so instead of rules you will use extensions in your tests. DBUnit Rules comes with a JUnit 5 extension which enables DBUnit.
+http://junit.org/junit5/[JUnit 5^] is the new version of JUnit and comes with a new extension model, so instead of `rules` you will use `extensions` in your tests. DBUnit Rules comes with a JUnit 5 extension which enables DBUnit.
 
 === Configuration
 
