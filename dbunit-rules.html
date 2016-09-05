@@ -544,6 +544,12 @@ table.CodeRay td.code>pre{padding:0}
 <li><a href="#example_3">9.2. Example</a></li>
 </ul>
 </li>
+<li><a href="#ruling_database_in_strong_junit_5_strong_tests">10. Ruling database in <strong>JUnit 5</strong> tests</a>
+<ul class="sectlevel2">
+<li><a href="#configuration_3">10.1. Configuration</a></li>
+<li><a href="#example_4">10.2. Example</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -2093,6 +2099,99 @@ Living documentation of <em>DBUnit Rules</em> is based on its <a href="https://g
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="ruling_database_in_strong_junit_5_strong_tests"><a class="anchor" href="#ruling_database_in_strong_junit_5_strong_tests"></a>10. Ruling database in <strong>JUnit 5</strong> tests</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><a href="http://junit.org/junit5/" target="_blank">JUnit 5</a> is the new version of JUnit and comes with a new extension model, so instead of rules you will use extensions in your tests. DBUnit Rules comes with a JUnit 5 extension which enables DBUnit.</p>
+</div>
+<div class="sect2">
+<h3 id="configuration_3"><a class="anchor" href="#configuration_3"></a>10.1. Configuration</h3>
+<div class="paragraph">
+<p>Just add following dependency to your classpath:</p>
+</div>
+<div class="listingblock">
+<div class="title">pom.xml</div>
+<div class="content">
+<pre>&lt;dependency&gt;
+   &lt;groupId&gt;com.github.dbunit-rules&lt;/groupId&gt;
+   &lt;artifactId&gt;junit5&lt;/artifactId&gt;
+   &lt;version&gt;0.12.0&lt;/version&gt;
+   &lt;scope&gt;test&lt;/scope&gt;
+&lt;/dependency&gt;</pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="example_4"><a class="anchor" href="#example_4"></a>10.2. Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><table class="CodeRay"><tr>
+  <td class="line-numbers"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre></td>
+  <td class="code"><pre><span class="annotation">@ExtendWith</span>(DBUnitExtension.class) <i class="conum" data-value="1"></i><b>(1)</b>
+<span class="annotation">@RunWith</span>(JUnitPlatform.class) <i class="conum" data-value="2"></i><b>(2)</b>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">DBUnitJUnit5Test</span> {
+
+    <span class="directive">private</span> ConnectionHolder connectionHolder = () -&gt; <i class="conum" data-value="3"></i><b>(3)</b>
+            instance(<span class="string"><span class="delimiter">&quot;</span><span class="content">junit5-pu</span><span class="delimiter">&quot;</span></span>).connection(); <i class="conum" data-value="4"></i><b>(4)</b>
+
+    <span class="annotation">@Test</span>
+    <span class="annotation">@DataSet</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">users.yml</span><span class="delimiter">&quot;</span></span>)
+    <span class="directive">public</span> <span class="type">void</span> shouldListUsers() {
+        <span class="predefined-type">List</span>&lt;User&gt; users = em().createQuery(<span class="string"><span class="delimiter">&quot;</span><span class="content">select u from User u</span><span class="delimiter">&quot;</span></span>).getResultList();
+        assertThat(users).isNotNull().isNotEmpty().hasSize(<span class="integer">2</span>);
+    }</pre></td>
+</tr></table></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Enables DBUnit;</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>JUnit 5 runner;</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>As JUnit5 requires <strong>Java8</strong> you can use lambdas in your tests;</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>DBUnitExtension will get connection by reflection so just declare a field or a method with ConnectionHolder as return type.</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Source code of the above example can be <a href="https://github.com/rmpestano/dbunit-rules/blob/master/junit5/src/test/java/com/github/dbunit/junit5/DBUnitJUnit5Test.java/#L22" target="_blank">found here</a>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div id="footnotes">
 <hr>
@@ -2102,7 +2201,7 @@ Living documentation of <em>DBUnit Rules</em> is based on its <a href="https://g
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-09-05 17:26:11 UTC
+Last updated 2016-09-05 17:54:54 UTC
 </div>
 </div>
 </body>
