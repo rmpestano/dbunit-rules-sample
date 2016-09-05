@@ -411,3 +411,48 @@ include::{testdir}/bdd/SearchUsersSteps.java[]
 ----
 
 NOTE: Living documentation of _DBUnit Rules_ is based on its https://github.com/rmpestano/dbunit-rules/tree/master/cdi/src/test/java/com/github/dbunit/rules/bdd[BDD tests^], you can access it here: http://rmpestano.github.io/dbunit-rules/documentation.html.
+
+
+== Ruling database in *JUnit 5* tests
+
+http://junit.org/junit5/[JUnit 5^] is the new version of JUnit and comes with a new extension model, so instead of rules you will use extensions in your tests. DBUnit Rules comes with a JUnit 5 extension which enables DBUnit.
+
+=== Configuration
+
+Just add following dependency to your classpath:
+
+.pom.xml
+----
+<dependency>
+   <groupId>com.github.dbunit-rules</groupId>
+   <artifactId>junit5</artifactId>
+   <version>0.12.0</version>
+   <scope>test</scope>
+</dependency>
+----
+
+ 
+=== Example
+
+[source,java,linenums]
+----
+@ExtendWith(DBUnitExtension.class) <1>
+@RunWith(JUnitPlatform.class) <2>
+public class DBUnitJUnit5Test {
+
+    private ConnectionHolder connectionHolder = () -> <3>
+            instance("junit5-pu").connection(); <4>
+
+    @Test
+    @DataSet("users.yml")
+    public void shouldListUsers() {
+        List<User> users = em().createQuery("select u from User u").getResultList();
+        assertThat(users).isNotNull().isNotEmpty().hasSize(2);
+    }
+----	
+<1> Enables DBUnit;
+<2> JUnit 5 runner;
+<3> As JUnit5 requires *Java8* you can use lambdas in your tests;
+<4> DBUnitExtension will get connection by reflection so just declare a field or a method with ConnectionHolder as return type.
+
+TIP: Source code of the above example can be https://github.com/rmpestano/dbunit-rules/blob/master/junit5/src/test/java/com/github/dbunit/junit5/DBUnitJUnit5Test.java/#L22[found here^].
