@@ -586,7 +586,7 @@ table.CodeRay td.code>pre{padding:0}
 <pre>		&lt;dependency&gt;
 			&lt;groupId&gt;com.github.dbunit-rules&lt;/groupId&gt;
 			&lt;artifactId&gt;core&lt;/artifactId&gt;
-			&lt;version&gt;0.9.0&lt;/version&gt;
+			&lt;version&gt;0.12.0&lt;/version&gt;
 			&lt;scope&gt;test&lt;/scope&gt;
 		&lt;/dependency&gt;</pre>
 </div>
@@ -1410,7 +1410,7 @@ If we declare <code>User</code> table in <code>dataset-with-javascript.yml</code
 <span class="keyword">import</span> <span class="include">com.github.dbunit.rules.DBUnitRule</span>;
 <span class="keyword">import</span> <span class="include">com.github.dbunit.rules.api.dataset.DataSet</span>;
 <span class="keyword">import</span> <span class="include">com.github.dbunit.rules.api.dataset.DataSetExecutor</span>;
-<span class="keyword">import</span> <span class="include">com.github.dbunit.rules.api.dataset.DataSetModel</span>;
+<span class="keyword">import</span> <span class="include">com.github.dbunit.rules.configuration.DataSetConfig</span>;
 <span class="keyword">import</span> <span class="include">com.github.dbunit.rules.connection.ConnectionHolderImpl</span>;
 <span class="keyword">import</span> <span class="include">com.github.dbunit.rules.dataset.DataSetExecutorImpl</span>;
 <span class="keyword">import</span> <span class="include">com.github.dbunit.rules.util.EntityManagerProvider</span>;
@@ -1467,9 +1467,9 @@ If we declare <code>User</code> table in <code>dataset-with-javascript.yml</code
                 instance(<span class="string"><span class="delimiter">&quot;</span><span class="content">exec2</span><span class="delimiter">&quot;</span></span>, <span class="keyword">new</span> ConnectionHolderImpl(emProvider2.connection()));
 
         <span class="comment">//programmatic seed db1</span>
-        exec1.createDataSet(<span class="keyword">new</span> DataSetModel(<span class="string"><span class="delimiter">&quot;</span><span class="content">users.yml</span><span class="delimiter">&quot;</span></span>));
+        exec1.createDataSet(<span class="keyword">new</span> DataSetConfig(<span class="string"><span class="delimiter">&quot;</span><span class="content">users.yml</span><span class="delimiter">&quot;</span></span>));
 
-        exec2.createDataSet(<span class="keyword">new</span> DataSetModel(<span class="string"><span class="delimiter">&quot;</span><span class="content">dataset-with-javascript.yml</span><span class="delimiter">&quot;</span></span>));<span class="comment">//seed db2</span>
+        exec2.createDataSet(<span class="keyword">new</span> DataSetConfig(<span class="string"><span class="delimiter">&quot;</span><span class="content">dataset-with-javascript.yml</span><span class="delimiter">&quot;</span></span>));<span class="comment">//seed db2</span>
 
         <span class="comment">//user comes from database represented by pu1</span>
         User user = (User) emProvider.em().
@@ -1525,7 +1525,7 @@ If we declare <code>User</code> table in <code>dataset-with-javascript.yml</code
 <pre>		&lt;dependency&gt;
 			&lt;groupId&gt;com.github.dbunit-rules&lt;/groupId&gt;
 			&lt;artifactId&gt;cdi&lt;/artifactId&gt;
-			&lt;version&gt;0.9.0&lt;/version&gt;
+			&lt;version&gt;0.12.0&lt;/version&gt;
 			&lt;scope&gt;test&lt;/scope&gt;
 		&lt;/dependency&gt;</pre>
 </div>
@@ -1861,7 +1861,7 @@ Since version <em>0.9.0</em> (To be released at the time of writing) transaction
 <pre>		&lt;dependency&gt;
 			&lt;groupId&gt;com.github.dbunit-rules&lt;/groupId&gt;
 			&lt;artifactId&gt;cucumber&lt;/artifactId&gt;
-			&lt;version&gt;0.9.0&lt;/version&gt;
+			&lt;version&gt;0.12.0&lt;/version&gt;
 			&lt;scope&gt;test&lt;/scope&gt;
 		&lt;/dependency&gt;</pre>
 </div>
@@ -2201,7 +2201,7 @@ Source code of the above example can be <a href="https://github.com/rmpestano/db
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-09-05 17:55:41 UTC
+Last updated 2016-09-07 20:19:16 UTC
 </div>
 </div>
 </body>
