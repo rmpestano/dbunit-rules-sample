@@ -5,10 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by pestano on 22/07/15.
@@ -33,16 +30,10 @@ public class User {
     }
     
     
-    public User(Long id, String name, Long tweetId, String tweetContent, Integer tweetLikes ) {
+    public User(Long id, String name, Collection<Tweet> tweets) {
         this.id = id;
         this.name = name;
-        List<Tweet> tweets = new ArrayList<Tweet>();
-        Tweet t = new Tweet();
-        t.setId(tweetId);
-        t.setContent(tweetContent);
-        t.setLikes(tweetLikes);
-        tweets.add(t);
-        this.tweets = tweets;
+        this.tweets = new ArrayList<Tweet>(tweets);
     }
     
 

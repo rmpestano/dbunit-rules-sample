@@ -3,7 +3,7 @@ package com.github.dbunit.rules.sample;
 import com.github.dbunit.rules.DBUnitRule;
 import com.github.dbunit.rules.api.dataset.DataSet;
 import com.github.dbunit.rules.api.dataset.DataSetExecutor;
-import com.github.dbunit.rules.api.dataset.DataSetModel;
+import com.github.dbunit.rules.configuration.DataSetConfig;
 import com.github.dbunit.rules.connection.ConnectionHolderImpl;
 import com.github.dbunit.rules.dataset.DataSetExecutorImpl;
 import com.github.dbunit.rules.util.EntityManagerProvider;
@@ -60,9 +60,9 @@ public class MultipleDataBasesTest {
                 instance("exec2", new ConnectionHolderImpl(emProvider2.connection()));
 
         //programmatic seed db1
-        exec1.createDataSet(new DataSetModel("users.yml"));
+        exec1.createDataSet(new DataSetConfig("users.yml"));
 
-        exec2.createDataSet(new DataSetModel("dataset-with-javascript.yml"));//seed db2
+        exec2.createDataSet(new DataSetConfig("dataset-with-javascript.yml"));//seed db2
 
         //user comes from database represented by pu1
         User user = (User) emProvider.em().
