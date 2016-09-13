@@ -2194,7 +2194,7 @@ Living documentation of <em>DBUnit Rules</em> is based on its <a href="https://g
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-Source code of the above example can be <a href="https://github.com/rmpestano/dbunit-rules/blob/master/junit5/src/test/java/com/github/dbunit/junit5/DBUnitJUnit5Test.java/#L22" target="_blank">found here</a>.
+Source code of the above example can be <a href="https://github.com/rmpestano/dbunit-rules/blob/master/junit5/src/test/java/com/github/dbunit/rules/junit5/DBUnitJUnit5It.java/#L22" target="_blank">found here</a>.
 </td>
 </tr>
 </table>
@@ -2206,7 +2206,7 @@ Source code of the above example can be <a href="https://github.com/rmpestano/db
 <h2 id="exporting_datasets"><a class="anchor" href="#exporting_datasets"></a>11. Exporting DataSets</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Creating dataset files is a very <code>error prone</code> task when done manually. Using DataSetExporter component you can generate datasets in <strong>YML</strong>, <strong>JSON, *XML</strong>, <strong>CSV</strong> and <strong>XLS</strong> formats:</p>
+<p>Creating dataset files is a very <code>error prone</code> task when done manually. Using DataSetExporter component you can generate datasets in <strong>YML</strong>, <strong>JSON</strong>, <strong>XML</strong>, <strong>CSV</strong> and <strong>XLS</strong> formats:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -2230,17 +2230,21 @@ Source code of the above example can be <a href="https://github.com/rmpestano/db
 17
 18
 19
+20
+21
 </pre></td>
   <td class="code"><pre>    <span class="annotation">@Test</span>
     <span class="annotation">@DataSet</span>(cleanBefore=<span class="predefined-constant">true</span>)
-    <span class="directive">public</span> <span class="type">void</span> shouldExportYMLDataSetWithoutAnnotations() <span class="directive">throws</span> <span class="exception">SQLException</span>, DatabaseUnitException{
+    <span class="directive">public</span> <span class="type">void</span> shouldExportYMLDataSetUsingDataSetExporter() <span class="directive">throws</span> <span class="exception">SQLException</span>, DatabaseUnitException{
             tx().begin();
             User u1 = <span class="keyword">new</span> User();
             u1.setName(<span class="string"><span class="delimiter">&quot;</span><span class="content">u1</span><span class="delimiter">&quot;</span></span>);
             em().persist(u1); /just insert a user and <span class="keyword">assert</span> it is present in exported dataset
         tx().commit();
             tx().commit();
-            DataSetExporterImpl.getInstance().export(<span class="keyword">new</span> DatabaseConnection(emProvider.connection()), <span class="keyword">new</span> DataSetExportConfig().outputFileName(<span class="string"><span class="delimiter">&quot;</span><span class="content">target/user.yml</span><span class="delimiter">&quot;</span></span>));
+            DataSetExporterImpl.getInstance().
+            export(<span class="keyword">new</span> DatabaseConnection(emProvider.connection()), <i class="conum" data-value="1"></i><b>(1)</b>
+                <span class="keyword">new</span> DataSetExportConfig().outputFileName(<span class="string"><span class="delimiter">&quot;</span><span class="content">target/user.yml</span><span class="delimiter">&quot;</span></span>)); <i class="conum" data-value="2"></i><b>(2)</b>
             <span class="predefined-type">File</span> ymlDataSet = <span class="keyword">new</span> <span class="predefined-type">File</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">target/user.yml</span><span class="delimiter">&quot;</span></span>);
           assertThat(ymlDataSet).exists();
           assertThat(contentOf(ymlDataSet)).
@@ -2249,13 +2253,24 @@ Source code of the above example can be <a href="https://github.com/rmpestano/db
                           <span class="string"><span class="delimiter">&quot;</span><span class="content">    NAME: </span><span class="char">\&quot;</span><span class="content">u1</span><span class="char">\&quot;</span><span class="delimiter">&quot;</span></span>+NEW_LINE
                           );
 
-    }
-</pre></td>
+    }</pre></td>
 </tr></table></code></pre>
 </div>
 </div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>DatabaseConnection is from DBUnit api and only needs a JDBC connection;</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>the second required parameter is a ExporterCnfig which only requires output file name attribute;</td>
+</tr>
+</table>
+</div>
 <div class="paragraph">
-<p>You can use <code>@ExportDataSet</code> instead of using DataSetExporter component:</p>
+<p>You can use <code>@ExportDataSet</code> to make extraction even easier:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -2268,13 +2283,21 @@ Source code of the above example can be <a href="https://github.com/rmpestano/db
 6
 </pre></td>
   <td class="code"><pre>    <span class="annotation">@Test</span>
-    <span class="annotation">@DataSet</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">datasets/yml/users.yml</span><span class="delimiter">&quot;</span></span>)
+    <span class="annotation">@DataSet</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">datasets/yml/users.yml</span><span class="delimiter">&quot;</span></span>) <i class="conum" data-value="1"></i><b>(1)</b>
     <span class="annotation">@ExportDataSet</span>(format = DataSetFormat.XML,outputName=<span class="string"><span class="delimiter">&quot;</span><span class="content">target/exported/xml/allTables.xml</span><span class="delimiter">&quot;</span></span>)
     <span class="directive">public</span> <span class="type">void</span> shouldExportAllTablesInXMLFormat() {
 
     }</pre></td>
 </tr></table></code></pre>
 </div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Not required, its here only to add some data to be exported after test execution.</td>
+</tr>
+</table>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -2291,7 +2314,7 @@ Full example above (and other related tests) can be <a href="https://github.com/
 <div class="sect2">
 <h3 id="configuration_4"><a class="anchor" href="#configuration_4"></a>11.1. Configuration</h3>
 <div class="paragraph">
-<p>Following table you can find all options for ExportDataset:</p>
+<p>Following table shows all exporter configuration options:</p>
 </div>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
@@ -2487,7 +2510,7 @@ Full example above (and other related tests) can be <a href="https://github.com/
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-09-13 02:36:32 UTC
+Last updated 2016-09-13 02:47:40 UTC
 </div>
 </div>
 </body>
