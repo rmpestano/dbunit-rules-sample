@@ -550,6 +550,12 @@ table.CodeRay td.code>pre{padding:0}
 <li><a href="#example_4">10.2. Example</a></li>
 </ul>
 </li>
+<li><a href="#exporting_datasets">11. Exporting DataSets</a>
+<ul class="sectlevel2">
+<li><a href="#configuration_4">11.1. Configuration</a></li>
+</ul>
+</li>
+<li><a href="#detecting_connection_leaks">12. Detecting connection leaks</a></li>
 </ul>
 </div>
 </div>
@@ -586,7 +592,7 @@ table.CodeRay td.code>pre{padding:0}
 <pre>		&lt;dependency&gt;
 			&lt;groupId&gt;com.github.dbunit-rules&lt;/groupId&gt;
 			&lt;artifactId&gt;core&lt;/artifactId&gt;
-			&lt;version&gt;0.12.0&lt;/version&gt;
+			&lt;version&gt;0.14.0&lt;/version&gt;
 			&lt;scope&gt;test&lt;/scope&gt;
 		&lt;/dependency&gt;</pre>
 </div>
@@ -1525,7 +1531,7 @@ If we declare <code>User</code> table in <code>dataset-with-javascript.yml</code
 <pre>		&lt;dependency&gt;
 			&lt;groupId&gt;com.github.dbunit-rules&lt;/groupId&gt;
 			&lt;artifactId&gt;cdi&lt;/artifactId&gt;
-			&lt;version&gt;0.12.0&lt;/version&gt;
+			&lt;version&gt;0.14.0&lt;/version&gt;
 			&lt;scope&gt;test&lt;/scope&gt;
 		&lt;/dependency&gt;</pre>
 </div>
@@ -1618,7 +1624,7 @@ If we declare <code>User</code> table in <code>dataset-with-javascript.yml</code
        xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/beans_1_0.xsd"&gt;
 
        &lt;interceptors&gt;
-              &lt;class&gt;com.github.dbunit.rules.cdi.DBUnitInterceptor&lt;/class&gt;
+              &lt;class&gt;com.github.dbunit.rules.cdi.DBUnitInterceptorImpl&lt;/class&gt;
        &lt;/interceptors&gt;
 &lt;/beans&gt;</pre>
 </div>
@@ -1725,17 +1731,19 @@ If we declare <code>User</code> table in <code>dataset-with-javascript.yml</code
 18
 19
 20
+21
 </pre></td>
   <td class="code"><pre><span class="annotation">@RunWith</span>(CdiTestRunner.class) <i class="conum" data-value="1"></i><b>(1)</b>
+<span class="annotation">@DBUnitInterceptor</span> <i class="conum" data-value="2"></i><b>(2)</b>
 <span class="directive">public</span> <span class="type">class</span> <span class="class">DBUnitRulesCDITest</span> {
 
     <span class="annotation">@Inject</span>
-    EntityManager em; <i class="conum" data-value="2"></i><b>(2)</b>
+    EntityManager em; <i class="conum" data-value="3"></i><b>(3)</b>
 
 
 
     <span class="annotation">@Test</span>
-    <span class="annotation">@UsingDataSet</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">users.yml</span><span class="delimiter">&quot;</span></span>) <i class="conum" data-value="3"></i><b>(3)</b>
+    <span class="annotation">@DataSet</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">users.yml</span><span class="delimiter">&quot;</span></span>) <i class="conum" data-value="4"></i><b>(4)</b>
     <span class="directive">public</span> <span class="type">void</span> shouldListUsers() {
         <span class="predefined-type">List</span>&lt;User&gt; users = em.
                 createQuery(<span class="string"><span class="delimiter">&quot;</span><span class="content">select u from User u</span><span class="delimiter">&quot;</span></span>).
@@ -1757,10 +1765,14 @@ If we declare <code>User</code> table in <code>dataset-with-javascript.yml</code
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>The EntityManager we produced in previous steps;</td>
+<td>Activates DBUnitInterceptor which will read <code>@DataSet</code> annotation in order to seed database before test;</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>The EntityManager we produced in previous steps;</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
 <td>This annotation enables DBUnit CDI interceptor which will prepare database state before the test execution.</td>
 </tr>
 </table>
@@ -1814,7 +1826,7 @@ For more examples, look at <a href="https://github.com/rmpestano/dbunit-rules/tr
 13
 </pre></td>
   <td class="code"><pre>    <span class="annotation">@Test</span>
-    <span class="annotation">@UsingDataSet</span>(cleanBefore = <span class="predefined-constant">true</span>) <span class="comment">//needed to activate interceptor (can be at class level)</span>
+    <span class="annotation">@DataSet</span>(cleanBefore = <span class="predefined-constant">true</span>) <span class="comment">//needed to activate interceptor (can be at class level)</span>
     <span class="annotation">@ExpectedDataSet</span>(value = <span class="string"><span class="delimiter">&quot;</span><span class="content">expectedUsers.yml</span><span class="delimiter">&quot;</span></span>,ignoreCols = <span class="string"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>)
     <span class="directive">public</span> <span class="type">void</span> shouldMatchExpectedDataSet() {
         User u = <span class="keyword">new</span> User();
@@ -1861,7 +1873,7 @@ Since version <em>0.9.0</em> (To be released at the time of writing) transaction
 <pre>		&lt;dependency&gt;
 			&lt;groupId&gt;com.github.dbunit-rules&lt;/groupId&gt;
 			&lt;artifactId&gt;cucumber&lt;/artifactId&gt;
-			&lt;version&gt;0.12.0&lt;/version&gt;
+			&lt;version&gt;0.14.0&lt;/version&gt;
 			&lt;scope&gt;test&lt;/scope&gt;
 		&lt;/dependency&gt;</pre>
 </div>
@@ -2025,19 +2037,16 @@ Examples:
 51
 52
 53
-54
 </pre></td>
   <td class="code"><pre><span class="keyword">package</span> <span class="namespace">com.github.dbunit.rules.sample.bdd</span>;
 
-<span class="keyword">import</span> <span class="include">com.github.dbunit.rules.cdi.api.UsingDataSet</span>;
+<span class="keyword">import</span> <span class="include">com.github.dbunit.rules.api.dataset.DataSet</span>;
+<span class="keyword">import</span> <span class="include">com.github.dbunit.rules.cdi.api.DBUnitInterceptor</span>;
 <span class="keyword">import</span> <span class="include">com.github.dbunit.rules.sample.User</span>;
-<span class="keyword">import</span> <span class="include">cucumber.api.PendingException</span>;
 <span class="keyword">import</span> <span class="include">cucumber.api.java.en.Given</span>;
 <span class="keyword">import</span> <span class="include">cucumber.api.java.en.Then</span>;
 <span class="keyword">import</span> <span class="include">cucumber.api.java.en.When</span>;
-<span class="keyword">import</span> <span class="include">org.hibernate.Criteria</span>;
 <span class="keyword">import</span> <span class="include">org.hibernate.Session</span>;
-<span class="keyword">import</span> <span class="include">org.hibernate.criterion.DetachedCriteria</span>;
 <span class="keyword">import</span> <span class="include">org.hibernate.criterion.MatchMode</span>;
 <span class="keyword">import</span> <span class="include">org.hibernate.criterion.Restrictions</span>;
 <span class="keyword">import</span> <span class="include">org.hibernate.sql.JoinType</span>;
@@ -2051,6 +2060,7 @@ Examples:
 <span class="comment">/**
  * Created by pestano on 20/06/16.
  */</span>
+<span class="annotation">@DBUnitInterceptor</span>
 <span class="directive">public</span> <span class="type">class</span> <span class="class">SearchUsersSteps</span> {
 
     <span class="annotation">@Inject</span>
@@ -2059,7 +2069,7 @@ Examples:
     <span class="predefined-type">List</span>&lt;User&gt; usersFound;
 
     <span class="annotation">@Given</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">^We have two users that have tweets in our database$</span><span class="delimiter">&quot;</span></span>)
-    <span class="annotation">@UsingDataSet</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">usersWithTweet.json</span><span class="delimiter">&quot;</span></span>)
+    <span class="annotation">@DataSet</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">usersWithTweet.json</span><span class="delimiter">&quot;</span></span>)
     <span class="directive">public</span> <span class="type">void</span> We_have_two_users_in_our_database() <span class="directive">throws</span> <span class="predefined-type">Throwable</span> {
     }
 
@@ -2192,6 +2202,282 @@ Source code of the above example can be <a href="https://github.com/rmpestano/db
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="exporting_datasets"><a class="anchor" href="#exporting_datasets"></a>11. Exporting DataSets</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Creating dataset files is a very <code>error prone</code> task when done manually. Using DataSetExporter component you can generate datasets in <strong>YML</strong>, <strong>JSON, *XML</strong>, <strong>CSV</strong> and <strong>XLS</strong> formats:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><table class="CodeRay"><tr>
+  <td class="line-numbers"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+</pre></td>
+  <td class="code"><pre>    <span class="annotation">@Test</span>
+    <span class="annotation">@DataSet</span>(cleanBefore=<span class="predefined-constant">true</span>)
+    <span class="directive">public</span> <span class="type">void</span> shouldExportYMLDataSetWithoutAnnotations() <span class="directive">throws</span> <span class="exception">SQLException</span>, DatabaseUnitException{
+            tx().begin();
+            User u1 = <span class="keyword">new</span> User();
+            u1.setName(<span class="string"><span class="delimiter">&quot;</span><span class="content">u1</span><span class="delimiter">&quot;</span></span>);
+            em().persist(u1); /just insert a user and <span class="keyword">assert</span> it is present in exported dataset
+        tx().commit();
+            tx().commit();
+            DataSetExporterImpl.getInstance().export(<span class="keyword">new</span> DatabaseConnection(emProvider.connection()), <span class="keyword">new</span> DataSetExportConfig().outputFileName(<span class="string"><span class="delimiter">&quot;</span><span class="content">target/user.yml</span><span class="delimiter">&quot;</span></span>));
+            <span class="predefined-type">File</span> ymlDataSet = <span class="keyword">new</span> <span class="predefined-type">File</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">target/user.yml</span><span class="delimiter">&quot;</span></span>);
+          assertThat(ymlDataSet).exists();
+          assertThat(contentOf(ymlDataSet)).
+                  contains(<span class="string"><span class="delimiter">&quot;</span><span class="content">USER:</span><span class="delimiter">&quot;</span></span>+NEW_LINE +
+                          <span class="string"><span class="delimiter">&quot;</span><span class="content">  - ID: 1</span><span class="delimiter">&quot;</span></span>+NEW_LINE +
+                          <span class="string"><span class="delimiter">&quot;</span><span class="content">    NAME: </span><span class="char">\&quot;</span><span class="content">u1</span><span class="char">\&quot;</span><span class="delimiter">&quot;</span></span>+NEW_LINE
+                          );
+
+    }
+</pre></td>
+</tr></table></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can use <code>@ExportDataSet</code> instead of using DataSetExporter component:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><table class="CodeRay"><tr>
+  <td class="line-numbers"><pre>1
+2
+3
+4
+5
+6
+</pre></td>
+  <td class="code"><pre>    <span class="annotation">@Test</span>
+    <span class="annotation">@DataSet</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">datasets/yml/users.yml</span><span class="delimiter">&quot;</span></span>)
+    <span class="annotation">@ExportDataSet</span>(format = DataSetFormat.XML,outputName=<span class="string"><span class="delimiter">&quot;</span><span class="content">target/exported/xml/allTables.xml</span><span class="delimiter">&quot;</span></span>)
+    <span class="directive">public</span> <span class="type">void</span> shouldExportAllTablesInXMLFormat() {
+
+    }</pre></td>
+</tr></table></code></pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Full example above (and other related tests) can be <a href="https://github.com/rmpestano/dbunit-rules/blob/master/core/src/test/java/com/github/dbunit/rules/ExportDataSetIt.java#L35" target="_blank">found here</a>.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect2">
+<h3 id="configuration_4"><a class="anchor" href="#configuration_4"></a>11.1. Configuration</h3>
+<div class="paragraph">
+<p>Following table you can find all options for ExportDataset:</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 33%;">
+<col style="width: 33%;">
+<col style="width: 33%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">format</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Exported dataset file format.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">YML</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">includeTables</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A list of table names to include in exported dataset.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Default is empty which means <strong>ALL tables</strong>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">queryList</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A list of select statements which the result will used in exported dataset.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">{}</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">dependentTables</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If true will bring dependent tables of declared includeTables.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">false</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">outputName</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name (and path) of output file.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">""</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="detecting_connection_leaks"><a class="anchor" href="#detecting_connection_leaks"></a>12. Detecting connection leaks</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>DBUnit Rules provides a component that count JDBC connection before and after test execution.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><table class="CodeRay"><tr>
+  <td class="line-numbers"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+</pre></td>
+  <td class="code"><pre><span class="annotation">@RunWith</span>(JUnit4.class)
+<span class="annotation">@DBUnit</span>(leakHunter = <span class="predefined-constant">true</span>)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">LeakHunterIt</span> {
+
+    <span class="annotation">@Rule</span>
+    <span class="directive">public</span> DBUnitRule dbUnitRule = DBUnitRule.instance(<span class="keyword">new</span> ConnectionHolderImpl(getConnection()));
+
+    <span class="annotation">@Rule</span>
+    <span class="directive">public</span> ExpectedException exception = ExpectedException.none();
+
+    <span class="annotation">@BeforeClass</span>
+    <span class="directive">public</span> <span class="directive">static</span> <span class="type">void</span> initDB() {
+        <span class="comment">//trigger db initialization</span>
+        Persistence.createEntityManagerFactory(<span class="string"><span class="delimiter">&quot;</span><span class="content">rules-it</span><span class="delimiter">&quot;</span></span>);
+    }
+
+    <span class="annotation">@Test</span>
+    <span class="annotation">@DataSet</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">yml/user.yml</span><span class="delimiter">&quot;</span></span>)
+    <span class="directive">public</span> <span class="type">void</span> shouldFindConnectionLeak() {
+         exception.expect(LeakHunterException.class); <i class="conum" data-value="1"></i><b>(1)</b>
+         exception.expectMessage(<span class="string"><span class="delimiter">&quot;</span><span class="content">Execution of method shouldFindConnectionLeak left 1 open connection(s).</span><span class="delimiter">&quot;</span></span>);
+         createLeak();
+     }
+
+     <span class="annotation">@Test</span>
+     <span class="annotation">@DataSet</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">yml/user.yml</span><span class="delimiter">&quot;</span></span>)
+     <span class="directive">public</span> <span class="type">void</span> shouldFindTwoConnectionLeaks()  {
+         exception.expect(LeakHunterException.class);
+         exception.expectMessage(<span class="string"><span class="delimiter">&quot;</span><span class="content">Execution of method shouldFindTwoConnectionLeaks left 2 open connection(s).</span><span class="delimiter">&quot;</span></span>);
+         createLeak();
+         createLeak();
+     }
+
+     <span class="annotation">@Test</span>
+     <span class="annotation">@DataSet</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">yml/user.yml</span><span class="delimiter">&quot;</span></span>)
+     <span class="annotation">@DBUnit</span>(leakHunter = <span class="predefined-constant">false</span>)
+     <span class="directive">public</span> <span class="type">void</span> shouldNotFindConnectionLeakWhenHunterIsDisabled() {
+           createLeak();
+     }
+
+    <span class="directive">private</span> <span class="predefined-type">Connection</span> getConnection() {
+          <span class="keyword">try</span> {
+               <span class="keyword">return</span> <span class="predefined-type">DriverManager</span>.getConnection(<span class="string"><span class="delimiter">&quot;</span><span class="content">jdbc:hsqldb:mem:test;DB_CLOSE_DELAY=-1</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">sa</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="delimiter">&quot;</span></span>);
+           } <span class="keyword">catch</span> (<span class="exception">SQLException</span> e) {
+               e.printStackTrace();
+               <span class="keyword">return</span> <span class="predefined-constant">null</span>;
+           }
+        }
+
+     <span class="directive">private</span> <span class="type">void</span> createLeak() <span class="directive">throws</span> <span class="exception">SQLException</span> {
+         <span class="predefined-type">Connection</span> connection = getConnection();
+         <span class="keyword">try</span> (<span class="predefined-type">Statement</span> stmt = connection.createStatement()) {
+              <span class="predefined-type">ResultSet</span> resultSet = stmt.executeQuery(<span class="string"><span class="delimiter">&quot;</span><span class="content">select count(*) from user</span><span class="delimiter">&quot;</span></span>);
+              assertThat(resultSet.next()).isTrue();
+              assertThat(resultSet.getInt(<span class="integer">1</span>)).isEqualTo(<span class="integer">2</span>);
+           }
+     }
+
+}</pre></td>
+</tr></table></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>If number of connections after test execution are greater than before then a <strong>LeakHunterException</strong> will be raised.</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
 </div>
 <div id="footnotes">
 <hr>
@@ -2201,7 +2487,7 @@ Source code of the above example can be <a href="https://github.com/rmpestano/db
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-09-07 20:19:16 UTC
+Last updated 2016-09-13 02:36:32 UTC
 </div>
 </div>
 </body>
