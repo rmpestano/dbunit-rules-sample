@@ -456,24 +456,26 @@ public class DBUnitJUnit5Test {
 <3> As JUnit5 requires *Java8* you can use lambdas in your tests;
 <4> DBUnitExtension will get connection by reflection so just declare a field or a method with ConnectionHolder as return type.
 
-TIP: Source code of the above example can be https://github.com/rmpestano/dbunit-rules/blob/master/junit5/src/test/java/com/github/dbunit/junit5/DBUnitJUnit5Test.java/#L22[found here^].
+TIP: Source code of the above example can be https://github.com/rmpestano/dbunit-rules/blob/master/junit5/src/test/java/com/github/dbunit/rules/junit5/DBUnitJUnit5It.java/#L22[found here^].
 
 == Exporting DataSets
 
-Creating dataset files is a very `error prone` task when done manually. Using DataSetExporter component you can generate datasets in *YML*, *JSON, *XML*, *CSV* and *XLS* formats:
+Creating dataset files is a very `error prone` task when done manually. Using DataSetExporter component you can generate datasets in *YML*, *JSON*, *XML*, *CSV* and *XLS* formats:
 
 [source, java,linenums]
 ----
     @Test
     @DataSet(cleanBefore=true)
-    public void shouldExportYMLDataSetWithoutAnnotations() throws SQLException, DatabaseUnitException{
+    public void shouldExportYMLDataSetUsingDataSetExporter() throws SQLException, DatabaseUnitException{
     	tx().begin();
     	User u1 = new User();
     	u1.setName("u1");
     	em().persist(u1); /just insert a user and assert it is present in exported dataset
         tx().commit();
     	tx().commit();
-    	DataSetExporterImpl.getInstance().export(new DatabaseConnection(emProvider.connection()), new DataSetExportConfig().outputFileName("target/user.yml"));
+    	DataSetExporterImpl.getInstance().
+    	export(new DatabaseConnection(emProvider.connection()), <1>
+    	    new DataSetExportConfig().outputFileName("target/user.yml")); <2>
     	File ymlDataSet = new File("target/user.yml");
           assertThat(ymlDataSet).exists();
           assertThat(contentOf(ymlDataSet)).
@@ -485,24 +487,27 @@ Creating dataset files is a very `error prone` task when done manually. Using Da
     }
 
 ----
+<1> DatabaseConnection is from DBUnit api and only needs a JDBC connection;
+<2> the second required parameter is a ExporterCnfig which only requires output file name attribute;
 
-You can use `@ExportDataSet` instead of using DataSetExporter component:
+You can use `@ExportDataSet` to make extraction even easier:
 
 [source, java, linenums]
 ----
     @Test
-    @DataSet("datasets/yml/users.yml")
+    @DataSet("datasets/yml/users.yml") <1>
     @ExportDataSet(format = DataSetFormat.XML,outputName="target/exported/xml/allTables.xml")
     public void shouldExportAllTablesInXMLFormat() {
 
     }
 ----
+<1> Not required, its here only to add some data to be exported after test execution.
 
 TIP: Full example above (and other related tests) can be https://github.com/rmpestano/dbunit-rules/blob/master/core/src/test/java/com/github/dbunit/rules/ExportDataSetIt.java#L35[found here^].
 
 === Configuration
 
-Following table you can find all options for ExportDataset:
+Following table shows all exporter configuration options:
 
 [cols="3*", options="header"]
 |===
