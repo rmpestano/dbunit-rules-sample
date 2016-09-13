@@ -1,14 +1,12 @@
 package com.github.dbunit.rules.sample.bdd;
 
-import com.github.dbunit.rules.cdi.api.UsingDataSet;
+import com.github.dbunit.rules.api.dataset.DataSet;
+import com.github.dbunit.rules.cdi.api.DBUnitInterceptor;
 import com.github.dbunit.rules.sample.User;
-import cucumber.api.PendingException;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.JoinType;
@@ -22,6 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * Created by pestano on 20/06/16.
  */
+@DBUnitInterceptor
 public class SearchUsersSteps {
 
     @Inject
@@ -30,7 +29,7 @@ public class SearchUsersSteps {
     List<User> usersFound;
 
     @Given("^We have two users that have tweets in our database$")
-    @UsingDataSet("usersWithTweet.json")
+    @DataSet("usersWithTweet.json")
     public void We_have_two_users_in_our_database() throws Throwable {
     }
 

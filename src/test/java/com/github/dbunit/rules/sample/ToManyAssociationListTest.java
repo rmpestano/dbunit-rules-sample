@@ -1,17 +1,8 @@
 package com.github.dbunit.rules.sample;
 
-import static com.github.dbunit.rules.util.EntityManagerProvider.em;
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.List;
-
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Join;
-import javax.persistence.criteria.Root;
-
+import com.github.dbunit.rules.api.dataset.DataSet;
+import com.github.dbunit.rules.cdi.api.DBUnitInterceptor;
+import com.github.dbunit.rules.util.EntityManagerProvider;
 import org.apache.deltaspike.testcontrol.api.junit.CdiTestRunner;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -24,12 +15,21 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.github.dbunit.rules.cdi.api.UsingDataSet;
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Root;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Created by pestano on 16/07/16.
  */
 @RunWith(CdiTestRunner.class)
+@DBUnitInterceptor
 public class ToManyAssociationListTest {
     
     
@@ -41,15 +41,15 @@ public class ToManyAssociationListTest {
     
 
     @Test
-    @UsingDataSet("userTweets.yml")
+    @DataSet("userTweets.yml")
     public void shouldListUsersAndTweetsWithJPQL() {
 
-        long count = (Long) em().createQuery("select count (distinct u.id) from User u " +
+        long count = (Long) EntityManagerProvider.em().createQuery("select count (distinct u.id) from User u " +
                 "left join u.tweets t where t.content like '%tweet%'").
                 getSingleResult();
         assertThat(count).isEqualTo(3);
 
-        List<User> users = em().createQuery
+        List<User> users = EntityManagerProvider.em().createQuery
                 ("select distinct u from User u " +
                         "left join u.tweets t where t.content like '%tweet%' ", User.class).
             /* not working   ("select distinct new com.github.dbunit.rules.sample.User(u.id, u.name, t.id, t.content, t.likes) from User u " +
@@ -65,11 +65,11 @@ public class ToManyAssociationListTest {
     }
 
     @Test
-    @UsingDataSet("userTweets.yml")
+    @DataSet("userTweets.yml")
     @Ignore("Hibernate criteria is not working for this case and is not recommended anymore, see: https://twitter.com/realpestano/status/754720913933950976")
     public void shouldListUsersAndTweetsWithHibernateCriteria() {
 
-        Session session = em().unwrap(Session.class);
+        Session session = EntityManagerProvider.em().unwrap(Session.class);
         Criteria criteria = session.createCriteria(User.class);
 
         long count = (Long)criteria.createAlias("tweets","t", JoinType.LEFT_OUTER_JOIN).
@@ -109,7 +109,7 @@ public class ToManyAssociationListTest {
     }
     
     @Test
-    @UsingDataSet("userTweets.yml")
+    @DataSet("userTweets.yml")
     public void shouldListUsersAndTweetsWithJPACriteria() {
         CriteriaBuilder builder = em.getCriteriaBuilder();
         CriteriaQuery<User> query = builder.createQuery(User.class);
@@ -131,7 +131,7 @@ public class ToManyAssociationListTest {
 
     
     @Test
-    @UsingDataSet("userTweets.yml")
+    @DataSet("userTweets.yml")
     public void shouldListUsersAndTweetsWithDesltaSpikeCriteria() {
         //the query below should be in user repository, is here for comparison purposes
         List<User> users = userRepository.criteria().

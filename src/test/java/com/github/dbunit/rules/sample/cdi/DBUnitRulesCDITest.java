@@ -1,7 +1,8 @@
 package com.github.dbunit.rules.sample.cdi;
 
 import com.github.dbunit.rules.api.dataset.ExpectedDataSet;
-import com.github.dbunit.rules.cdi.api.UsingDataSet;
+import com.github.dbunit.rules.api.dataset.DataSet;
+import com.github.dbunit.rules.cdi.api.DBUnitInterceptor;
 import com.github.dbunit.rules.sample.User;
 import org.apache.deltaspike.testcontrol.api.junit.CdiTestRunner;
 import org.junit.Test;
@@ -19,15 +20,16 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 // tag::sample[]
 @RunWith(CdiTestRunner.class) //<1>
+@DBUnitInterceptor //<2>
 public class DBUnitRulesCDITest {
 
     @Inject
-    EntityManager em; //<2>
+    EntityManager em; //<3>
 
 
 
     @Test
-    @UsingDataSet("users.yml") //<3>
+    @DataSet("users.yml") //<4>
     public void shouldListUsers() {
         List<User> users = em.
                 createQuery("select u from User u").
@@ -41,7 +43,7 @@ public class DBUnitRulesCDITest {
 
     // tag::expectedCDI[]
     @Test
-    @UsingDataSet(cleanBefore = true) //needed to activate interceptor (can be at class level)
+    @DataSet(cleanBefore = true) //needed to activate interceptor (can be at class level)
     @ExpectedDataSet(value = "expectedUsers.yml",ignoreCols = "id")
     public void shouldMatchExpectedDataSet() {
         User u = new User();
